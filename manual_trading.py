@@ -71,11 +71,16 @@ for i in range(5):
     for trade in trades:
         for j in range(4):
             newTrade = ManualTrade(trade.getHistory())
-            newTrade.add_to_history(j)
+
+            if i == 4:
+                newTrade.add_to_history(3)
+
+            else:
+                newTrade.add_to_history(j)
+            
             this_levels_trades.append(newTrade)
     
     trades = this_levels_trades
 
 maxTrade = getMaxTrade(trades)
 maxTrade.printHistory()
-print(trades)
