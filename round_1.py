@@ -93,6 +93,7 @@ class Trader:
         # Nothing so far (we need to make this I guess?)
         print("traderData: " + state.traderData)
         print("Observations: " + str(state.observations))
+        print(f"Own trades: {state.own_trades}")
 
 		# Orders to be placed on exchange matching engine
         result = {}
@@ -149,6 +150,9 @@ class Trader:
             if sell_order_history.get(product) is not None:
                 acceptable_buy_price = get_average(sell_order_history[product]) - 2
                 acceptable_sell_price = get_average(sell_order_history[product]) + 3
+
+                if product == "SQUID_INK":
+                    acceptable_sell_price = get_average(sell_order_history[product]) + 5
 
             print(f"Acceptable buy price: {acceptable_buy_price}")
             print(f"Acceptable sell price: {acceptable_sell_price}")
