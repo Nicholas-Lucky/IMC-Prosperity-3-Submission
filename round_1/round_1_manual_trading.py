@@ -59,21 +59,23 @@ def getMaxTrade(trades):
     
     return trades[maxIndex]
 
-
 starting_amount = 500000
 starting_index = 3
+ending_index = 3
+num_trades = 5
+num_item_choices = 4
 
-trades = [ManualTrade([3], starting_amount)]
+trades = [ManualTrade([starting_index], starting_amount)]
 
-for i in range(5):
+for i in range(num_trades):
     this_levels_trades = []
 
     for trade in trades:
-        for j in range(4):
+        for j in range(num_item_choices):
             newTrade = ManualTrade(trade.getHistory(), trade.revenue)
 
-            if i == 4:
-                newTrade.add_to_history(3)
+            if i == (num_trades - 1):
+                newTrade.add_to_history(ending_index)
 
             else:
                 newTrade.add_to_history(j)
