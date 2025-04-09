@@ -140,20 +140,20 @@ class Trader:
             acceptable_sell_price = 10001  # Participant should calculate this value
 
             if product == "SQUID_INK":
-                acceptable_buy_price = 1949.5
+                acceptable_buy_price = 1950
                 acceptable_sell_price = 1970
             
             elif product == "KELP":
-                acceptable_buy_price = 2029.5
+                acceptable_buy_price = 2030
                 acceptable_sell_price = 2032
             
             if sell_order_history.get(product) is not None:
                 if product == "KELP":
                     acceptable_buy_price = get_average(sell_order_history[product]) - 1
-                    acceptable_sell_price = get_average(sell_order_history[product]) + 1
+                    acceptable_sell_price = get_average(sell_order_history[product]) + 3
 
                 if product == "SQUID_INK":
-                    acceptable_sell_price = get_average(sell_order_history[product]) + 5
+                    acceptable_sell_price = get_average(sell_order_history[product]) + 6
 
             print(f"Acceptable buy price: {acceptable_buy_price}")
             print(f"Acceptable sell price: {acceptable_sell_price}")
