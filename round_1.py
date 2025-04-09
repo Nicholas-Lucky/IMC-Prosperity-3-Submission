@@ -135,9 +135,9 @@ class Trader:
                 acceptable_sell_price = 2032
             """
 
-            # Set to "RAINFOREST_RESIN" price by default
+            # "RAINFOREST_RESIN" price, hardcoded for now
             acceptable_buy_price = 9999  # Participant should calculate this value
-            acceptable_sell_price = 10002  # Participant should calculate this value
+            acceptable_sell_price = 10001  # Participant should calculate this value
 
             if product == "SQUID_INK":
                 acceptable_buy_price = 1949.5
@@ -148,8 +148,9 @@ class Trader:
                 acceptable_sell_price = 2032
             
             if sell_order_history.get(product) is not None:
-                acceptable_buy_price = get_average(sell_order_history[product]) - 2
-                acceptable_sell_price = get_average(sell_order_history[product]) + 3
+                if product == "KELP":
+                    acceptable_buy_price = get_average(sell_order_history[product]) - 1
+                    acceptable_sell_price = get_average(sell_order_history[product]) + 1
 
                 if product == "SQUID_INK":
                     acceptable_sell_price = get_average(sell_order_history[product]) + 5
@@ -171,6 +172,9 @@ class Trader:
                 if sell_order_history.get(product) is None:
                     sell_order_history[product] = [best_ask]
                 else:
+                    if len(sell_order_history[product]) >= 100:
+                        sell_order_history[product].pop(0)
+                    
                     sell_order_history[product].append(best_ask)
                 
                 # If the bot is selling for less than we expect (wahoo)
