@@ -172,9 +172,6 @@ class Trader:
                 if sell_order_history.get(product) is None:
                     sell_order_history[product] = [best_ask]
                 else:
-                    if len(sell_order_history[product]) >= 100:
-                        sell_order_history[product].pop(0)
-                    
                     sell_order_history[product].append(best_ask)
                 
                 # If the bot is selling for less than we expect (wahoo)
