@@ -9,12 +9,12 @@ table = [[1, 1.45, 0.52, 0.72],
          [1.34, 1.98, 0.64, 1]]
 
 class ManualTrade:
-    def __init__(self, prev_history=[]):
+    def __init__(self, prev_history=[], prev_revenue=500000):
         self.history = []
         for item in prev_history:
             self.history.append(item)
         
-        self.revenue = 500000
+        self.revenue = prev_revenue
     
     def __repr__(self):
         return f"ManualTrade({self.history})"
@@ -63,14 +63,14 @@ def getMaxTrade(trades):
 starting_amount = 500000
 starting_index = 3
 
-trades = [ManualTrade([3])]
+trades = [ManualTrade([3], starting_amount)]
 
 for i in range(5):
     this_levels_trades = []
 
     for trade in trades:
         for j in range(4):
-            newTrade = ManualTrade(trade.getHistory())
+            newTrade = ManualTrade(trade.getHistory(), trade.revenue)
 
             if i == 4:
                 newTrade.add_to_history(3)
@@ -84,3 +84,4 @@ for i in range(5):
 
 maxTrade = getMaxTrade(trades)
 maxTrade.printHistory()
+print(maxTrade.getHistory())
