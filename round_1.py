@@ -102,7 +102,7 @@ class Trader:
                 acceptable_buy_price = 2030
                 acceptable_sell_price = 2032
 
-            print(f"Acceptable buy price: {acceptable_sell_price}")
+            print(f"Acceptable buy price: {acceptable_buy_price}")
             print(f"Acceptable sell price: {acceptable_sell_price}")
 
             # I guess... how many buy and sell orders?
