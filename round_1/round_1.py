@@ -1,6 +1,54 @@
 from datamodel import OrderDepth, UserId, TradingState, Order
 from typing import List
 import string
+"""
+def ayo(s):
+    s = s.strip("{}")
+    s = s.split("]")
+    
+    newList = []
+    for entry in s:
+        if entry != "":
+            newList.append((entry + "]").strip(", "))
+    
+    d = {}
+    for item in newList:
+        key_value_pair = item.split(":")
+        key = key_value_pair[0].strip(" '")
+        
+        values = key_value_pair[1].strip(" []").split(",")
+        
+        for index, value in enumerate(values):
+            values[index] = int(value.strip())
+        
+        d[key] = values
+    return d
+
+test = [{"RAINFOREST_RESIN": [1, 2, 3]}, {"SQUID_INK": [4, 5, 6]}]
+s = str(test)
+print(f"Before: {s}")
+
+s = s.strip("[]")
+print(s)
+
+s = s.split("}")
+print(s)
+
+dList = []
+for entry in s:
+    if entry != "":
+        dList.append((entry + "}").strip(", "))
+print(dList)
+
+s = dList[0]
+print(type(s))
+d1 = ayo(s)
+d2 = ayo(dList[1])
+
+dList[0] = d1
+dList[1] = d2
+print(dList)
+"""
 
 def string_to_dictionary(s):
     s = s.strip("{}")
@@ -24,6 +72,23 @@ def string_to_dictionary(s):
         d[key] = values
     
     return d
+
+def string_to_list_of_dictionaries(s):
+    s = s.strip("[]")
+    s = s.split("}")
+
+    dList = []
+    for entry in s:
+        if entry != "":
+            dList.append((entry + "}").strip(", "))
+    
+    sell_orders = string_to_dictionary(dList[0])
+    buy_orders = string_to_dictionary(dList[1])
+
+    dList[0] = sell_orders
+    dList[1] = buy_orders
+    
+    return dList
 
 def get_average(prices):
     return sum(prices) / len(prices)
@@ -99,9 +164,12 @@ class Trader:
         result = {}
 
         sell_order_history = {}
+        buy_order_history = {}
         if state.traderData != "":
-            sell_order_history = string_to_dictionary(state.traderData)
-
+            order_histories = string_to_list_of_dictionaries(state.traderData)
+            sell_order_history = order_histories[0]
+            buy_order_history = order_histories[1]
+        
         # state.order_depths:
         # keys = products, values = OrderDepth instances
 
@@ -149,11 +217,15 @@ class Trader:
             
             if sell_order_history.get(product) is not None:
                 if product == "KELP":
-                    acceptable_buy_price = get_average(sell_order_history[product]) - 1
+                    acceptable_buy_price = get_average(sell_order_history[product])
                     acceptable_sell_price = get_average(sell_order_history[product]) + 3
 
                 if product == "SQUID_INK":
-                    acceptable_sell_price = get_average(sell_order_history[product]) + 6
+                    sell_order_ave = get_average(sell_order_history[product])
+                    buy_order_ave = get_average(buy_order_history[product])
+
+                    #acceptable_buy_price = sell_order_ave
+                    acceptable_sell_price = sell_order_ave + 6
 
             print(f"Acceptable buy price: {acceptable_buy_price}")
             print(f"Acceptable sell price: {acceptable_sell_price}")
@@ -187,6 +259,12 @@ class Trader:
                 # best_bid_amount = quantity
                 best_bid, best_bid_amount = get_highest_buy_order(list(order_depth.buy_orders.items()))
                 print(f"Buy orders: {list(order_depth.buy_orders.items())}")
+                
+                if product == "SQUID_INK":
+                    if buy_order_history.get(product) is None:
+                        buy_order_history[product] = [best_bid]
+                    else:
+                        buy_order_history[product].append(best_bid)
 
                 # If the bot is buying for more than we expect (wahoo)
                 if int(best_bid) > acceptable_sell_price:
@@ -198,9 +276,13 @@ class Trader:
             # After we make our orders, put those orders in result for that respective product
             result[product] = orders
 
+        newData = []
+        newData.append(sell_order_history)
+        newData.append(buy_order_history)
+
         # String value holding Trader state data required. 
         # It will be delivered as TradingState.traderData on next execution.
-        traderData = str(sell_order_history)
+        traderData = str(newData)
 
         # Sample conversion request. Check more details below. 
         conversions = 1
