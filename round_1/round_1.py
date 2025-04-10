@@ -1,54 +1,6 @@
 from datamodel import OrderDepth, UserId, TradingState, Order
 from typing import List
 import string
-"""
-def ayo(s):
-    s = s.strip("{}")
-    s = s.split("]")
-    
-    newList = []
-    for entry in s:
-        if entry != "":
-            newList.append((entry + "]").strip(", "))
-    
-    d = {}
-    for item in newList:
-        key_value_pair = item.split(":")
-        key = key_value_pair[0].strip(" '")
-        
-        values = key_value_pair[1].strip(" []").split(",")
-        
-        for index, value in enumerate(values):
-            values[index] = int(value.strip())
-        
-        d[key] = values
-    return d
-
-test = [{"RAINFOREST_RESIN": [1, 2, 3]}, {"SQUID_INK": [4, 5, 6]}]
-s = str(test)
-print(f"Before: {s}")
-
-s = s.strip("[]")
-print(s)
-
-s = s.split("}")
-print(s)
-
-dList = []
-for entry in s:
-    if entry != "":
-        dList.append((entry + "}").strip(", "))
-print(dList)
-
-s = dList[0]
-print(type(s))
-d1 = ayo(s)
-d2 = ayo(dList[1])
-
-dList[0] = d1
-dList[1] = d2
-print(dList)
-"""
 
 def string_to_dictionary(s):
     s = s.strip("{}")
@@ -217,12 +169,21 @@ class Trader:
             
             if sell_order_history.get(product) is not None:
                 if product == "KELP":
-                    acceptable_buy_price = get_average(sell_order_history[product])
+                    #acceptable_buy_price = get_average(sell_order_history[product])
                     acceptable_sell_price = get_average(sell_order_history[product]) + 3
 
                 if product == "SQUID_INK":
                     sell_order_ave = get_average(sell_order_history[product])
                     buy_order_ave = get_average(buy_order_history[product])
+
+                    index_one = 0
+                    index_two = 99
+                    if len(sell_order_history[product]) < 100:
+                        index_two = len(sell_order_history[product]) - 1
+                    
+                    sell_offset = (sell_order_history[product][index_one] - sell_order_history[product][index_two]) / 2
+                    if sell_offset < 0:
+                        sell_offset *= -1
 
                     #acceptable_buy_price = sell_order_ave
                     acceptable_sell_price = sell_order_ave + 6
@@ -284,6 +245,6 @@ class Trader:
         # It will be delivered as TradingState.traderData on next execution.
         traderData = str(newData)
 
-        # Sample conversion request. Check more details below. 
+        # Sample conversion request. Check more details below.
         conversions = 1
         return result, conversions, traderData
