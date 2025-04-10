@@ -1,4 +1,5 @@
-# This option has more adaptable offsets for SQUID_INK (I think), but so far has less profits
+# This option has even more adaptable thresholds for all products: RAINFOREST_RESIN, SQUID_INK, and KELP, but so far has less profits
+# Most adaptable so far
 
 from datamodel import OrderDepth, UserId, TradingState, Order
 from typing import List
