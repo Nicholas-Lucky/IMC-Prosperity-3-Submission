@@ -1,4 +1,4 @@
-# This option has more adaptable offsets for SQUID_INK (I think), but so far has less profits
+# Currently the same code as our Round 1 submission
 
 from datamodel import OrderDepth, UserId, TradingState, Order
 from typing import List
