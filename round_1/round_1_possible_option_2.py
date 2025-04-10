@@ -188,7 +188,7 @@ class Trader:
                         sell_offset *= -1
 
                     #acceptable_buy_price = sell_order_ave
-                    acceptable_sell_price = buy_order_ave + sell_offset
+                    acceptable_sell_price = sell_order_ave + sell_offset
 
             print(f"Acceptable buy price: {acceptable_buy_price}")
             print(f"Acceptable sell price: {acceptable_sell_price}")
