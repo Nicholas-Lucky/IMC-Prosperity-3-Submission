@@ -188,15 +188,15 @@ class Trader:
                     acceptable_sell_price = sell_order_ave + sell_offset
 
                 if product == "CROISSANTS":
-                    acceptable_buy_price = get_average(sell_order_history[product]) - 3
+                    acceptable_buy_price = get_average(sell_order_history[product]) - 4
                     acceptable_sell_price = get_average(sell_order_history[product]) + sell_offset
                 
                 if product == "DJEMBES":
-                    acceptable_buy_price = get_average(sell_order_history[product]) - 3
+                    acceptable_buy_price = get_average(sell_order_history[product]) - 5
                     acceptable_sell_price = get_average(sell_order_history[product]) + sell_offset
                 
                 if product == "JAMS":
-                    acceptable_buy_price = get_average(sell_order_history[product]) - 3
+                    acceptable_buy_price = get_average(sell_order_history[product]) - 4
                     acceptable_sell_price = get_average(sell_order_history[product]) + sell_offset
 
             print(f"Acceptable buy price: {acceptable_buy_price}")
