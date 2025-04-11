@@ -204,19 +204,19 @@ class Trader:
                 if sell_offset < 0:
                     sell_offset *= -1
 
-                #if product == "RAINFOREST_RESIN":
-                    #acceptable_buy_price = get_average(sell_order_history[product]) - 2
-                    #acceptable_sell_price = get_average(sell_order_history[product]) + 1
+                if product == "RAINFOREST_RESIN":
+                    acceptable_buy_price = get_average(sell_order_history[product]) - 1
+                    acceptable_sell_price = get_average(sell_order_history[product]) + 1
                 
                 if product == "KELP":
-                    #acceptable_buy_price = get_average(sell_order_history[product])
+                    acceptable_buy_price = get_average(sell_order_history[product])
                     acceptable_sell_price = get_average(sell_order_history[product]) + 3
 
                 if product == "SQUID_INK":
                     sell_order_ave = get_average(sell_order_history[product])
                     buy_order_ave = get_average(buy_order_history[product])
 
-                    #acceptable_buy_price = sell_order_ave
+                    acceptable_buy_price = sell_order_ave - 1
                     acceptable_sell_price = sell_order_ave + sell_offset
 
                 if product == "CROISSANTS":
