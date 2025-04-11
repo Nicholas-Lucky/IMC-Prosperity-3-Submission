@@ -1,5 +1,3 @@
-# Currently the same code as our Round 1 submission
-
 from datamodel import OrderDepth, UserId, TradingState, Order
 from typing import List
 import string
@@ -109,10 +107,9 @@ class Trader:
             current_positions["KELP"] = state.position["KELP"]
         """
 
-        # Nothing so far (we need to make this I guess?)
-        print("traderData: " + state.traderData)
-        print("Observations: " + str(state.observations))
-        print(f"Own trades: {state.own_trades}")
+        #print("traderData: " + state.traderData)
+        #print("Observations: " + str(state.observations))
+        #print(f"Own trades: {state.own_trades}")
 
 		# Orders to be placed on exchange matching engine
         result = {}
@@ -143,33 +140,38 @@ class Trader:
             # Make a list of orders
             orders: List[Order] = []
 
-            """
-            # Set to "RAINFOREST_RESIN" price by default
-            acceptable_buy_price = 9998.5  # Participant should calculate this value
-            acceptable_sell_price = 10002  # Participant should calculate this value
+            if product == "RAINFOREST_RESIN":
+                acceptable_buy_price = 9999
+                acceptable_sell_price = 10001
 
-            if product == "SQUID_INK":
-                acceptable_buy_price = 1949.5
-                acceptable_sell_price = 1970
-            
-            elif product == "KELP":
-                acceptable_buy_price = 2029.5
-                acceptable_sell_price = 2032
-            """
-
-            # "RAINFOREST_RESIN" price, hardcoded for now
-            acceptable_buy_price = 9999  # Participant should calculate this value
-            acceptable_sell_price = 10001  # Participant should calculate this value
-
-            if product == "SQUID_INK":
+            elif product == "SQUID_INK":
                 acceptable_buy_price = 1950
                 acceptable_sell_price = 1970
             
             elif product == "KELP":
                 acceptable_buy_price = 2030
                 acceptable_sell_price = 2032
+
+            elif product == "CROISSANTS":
+                acceptable_buy_price = 4015
+                acceptable_sell_price = 4024
+
+            elif product == "DJEMBES":
+                acceptable_buy_price = 13450
+                acceptable_sell_price = 13485
+
+            elif product == "JAMS":
+                acceptable_buy_price = 6625
+                acceptable_sell_price = 6638
             
             if sell_order_history.get(product) is not None:
+                index_one = 0
+                index_two = 99
+                if len(sell_order_history[product]) < 100:
+                    index_two = len(sell_order_history[product]) - 1
+                
+                sell_offset = (sell_order_history[product][index_one] - sell_order_history[product][index_two]) / 7
+
                 #if product == "RAINFOREST_RESIN":
                     #acceptable_buy_price = get_average(sell_order_history[product]) - 2
                     #acceptable_sell_price = get_average(sell_order_history[product]) + 1
@@ -182,17 +184,20 @@ class Trader:
                     sell_order_ave = get_average(sell_order_history[product])
                     buy_order_ave = get_average(buy_order_history[product])
 
-                    index_one = 0
-                    index_two = 99
-                    if len(sell_order_history[product]) < 100:
-                        index_two = len(sell_order_history[product]) - 1
-                    
-                    sell_offset = (sell_order_history[product][index_one] - sell_order_history[product][index_two]) / 2
-                    if sell_offset < 0:
-                        sell_offset *= -1
-
                     #acceptable_buy_price = sell_order_ave
                     acceptable_sell_price = sell_order_ave + sell_offset
+
+                if product == "CROISSANTS":
+                    acceptable_buy_price = get_average(sell_order_history[product]) - 3
+                    acceptable_sell_price = get_average(sell_order_history[product]) + sell_offset
+                
+                if product == "DJEMBES":
+                    acceptable_buy_price = get_average(sell_order_history[product]) - 3
+                    acceptable_sell_price = get_average(sell_order_history[product]) + sell_offset
+                
+                if product == "JAMS":
+                    acceptable_buy_price = get_average(sell_order_history[product]) - 3
+                    acceptable_sell_price = get_average(sell_order_history[product]) + sell_offset
 
             print(f"Acceptable buy price: {acceptable_buy_price}")
             print(f"Acceptable sell price: {acceptable_sell_price}")
@@ -211,6 +216,8 @@ class Trader:
                 if sell_order_history.get(product) is None:
                     sell_order_history[product] = [best_ask]
                 else:
+                    if len(sell_order_history[product]) > 75:
+                        sell_order_history[product].pop(0)
                     sell_order_history[product].append(best_ask)
                 
                 # If the bot is selling for less than we expect (wahoo)
@@ -227,6 +234,7 @@ class Trader:
                 best_bid, best_bid_amount = get_highest_buy_order(list(order_depth.buy_orders.items()))
                 print(f"Buy orders: {list(order_depth.buy_orders.items())}")
                 
+                # TODO: Could allow for all products to have a buy order in case
                 if product == "SQUID_INK":
                     if buy_order_history.get(product) is None:
                         buy_order_history[product] = [best_bid]
