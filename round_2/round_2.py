@@ -224,7 +224,7 @@ class Trader:
                     acceptable_sell_price = get_average(sell_order_history[product]) + sell_offset
                 
                 if product == "DJEMBES":
-                    acceptable_buy_price = get_average(sell_order_history[product]) - 5
+                    acceptable_buy_price = get_average(sell_order_history[product]) - 4
                     acceptable_sell_price = get_average(sell_order_history[product]) + sell_offset
                 
                 if product == "JAMS":
