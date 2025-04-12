@@ -32,8 +32,9 @@ print(a)
 """
 
 max_percent_to_be_profitable = 5
-crates = [Crate(10, 1), Crate(80, 6), Crate(37, 3),
-          Crate(90, 10), Crate(31, 2), Crate(50, 4),
+crates = [Crate(80, 6), Crate(37, 3),
+          Crate(10, 1), Crate(31, 2), Crate(17, 1),
+          Crate(90, 10), Crate(50, 4),
           Crate(20, 2), Crate(73, 4), Crate(89, 8)]
 
 sort_by_percent(crates, max_percent_to_be_profitable)
