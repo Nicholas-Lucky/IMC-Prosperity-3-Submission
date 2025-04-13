@@ -252,27 +252,52 @@ class Trader:
             # I guess... how many buy and sell orders?
             print(f"Buy Order depth: {len(order_depth.buy_orders)}, Sell order depth: {len(order_depth.sell_orders)}")
 
-            # Detect a increase (crash or not) that requires us to sell everything
+            # Make conditions (for a crash or not) in which we would want to sell everything
             best_ask, best_ask_amount = get_lowest_sell_order(list(order_depth.sell_orders.items()))
 
-            sell_all_threshold = 0
-            if sell_order_history.get(product) is not None:
-                sell_all_threshold = get_average(sell_order_history[product]) * 1.002
-                print(f"Hello? {sell_all_threshold}")
+            # Condition 1: Sell order is a slightly higher above the historical average (no clue why this gives more profits)
+            # Condition 2: Sell order is a too high above the historical average
+            # Condition 3: Sell order is too low vs 5 sell orders ago
+            # Either needs to be true for us to sell everything
+            condition_one = False
+            condition_two = False
+            condition_three = False
 
-            if (best_ask > sell_all_threshold) and (sell_order_history.get(product) is not None):
+            # Set the condition values
+            if sell_order_history.get(product) is not None:
+                # Condition 1
+                historical_average = get_average(sell_order_history[product]) 
+                print(f"historical_average: {historical_average}")
+
+                condition_one = best_ask > (historical_average * 1.001)
+                
+                # Condition 2
+                historical_average = get_average(sell_order_history[product]) 
+                condition_two = best_ask > (historical_average * 1.01)
+
+                # Condition 3
+                if len(sell_order_history[product]) >= 5:
+                    fifth_previous_sell_order = sell_order_history[product][-5]
+                    #condition_three = best_ask < (fifth_previous_sell_order * 0.98)
+
+            if ((condition_one or condition_two or condition_three) and (sell_order_history.get(product) is not None)):
                 print("CRASHING... CRASHING!!!")
+                sell_order_history[product].append(best_ask)
 
                 # Sell everything (sell to all buy orders until position <= 0)
                 for buy_order in list(order_depth.buy_orders.items()):
                     bid, bid_amount = buy_order
                     if position <= 0:
                         break
+                    
+                    # In case I guess (ideally I would think that we sell everything until our position is back to 0)
+                    if position - bid_amount <= 0:
+                        orders.append(Order(product, bid, -1 * position))
 
-                    orders.append(Order(product, bid, -1 * bid_amount))
+                    else:
+                        orders.append(Order(product, bid, -1 * bid_amount))
+                    
                     position -= bid_amount
-                
-                sell_order_history[product].append(best_ask)
 
             # If there is no crazy decrease, resume!
             else:
@@ -287,18 +312,24 @@ class Trader:
                     if sell_order_history.get(product) is None:
                         sell_order_history[product] = [best_ask]
                     else:
-                        # Default: Keep the past 75 orders
-                        if len(sell_order_history[product]) > 75:
+                        # Default: Keep the past 150 orders
+                        if len(sell_order_history[product]) > 150:
                             sell_order_history[product].pop(0)
                         
                         # or best_ask < (sell_order_history[product][-5] * 0.92)
 
-                        # Big jumps: Keep the past 35 orders
+                        # Previously: Big jumps: Keep the past 35 orders
+                        # Big jumps: Keep the past 80 orders
                         # TODO: Maybe make the multiplier 1.001?
-                        if len(sell_order_history[product]) > 35:
-                            if best_ask > (sell_order_history[product][-5] * 1.08):
+
+                        # If there are more than 75 sell orders in the sell order history (max is 150)
+                        if len(sell_order_history[product]) > 75:
+                            # If the current sell order price is 0.5% above the 10th most recent sell order price
+                            if best_ask > (sell_order_history[product][-10] * 1.005):
                                 print("BIG JUMP!!!")
-                                for i in range(35, len(sell_order_history[product])):
+
+                                # Reduce the sell order history by 70 (remove the 70 oldest)
+                                for i in range(70, len(sell_order_history[product])):
                                     sell_order_history[product].pop(0)
 
                         sell_order_history[product].append(best_ask)
