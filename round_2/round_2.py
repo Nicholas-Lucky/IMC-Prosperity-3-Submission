@@ -255,32 +255,62 @@ class Trader:
             # Make conditions (for a crash or not) in which we would want to sell everything
             best_ask, best_ask_amount = get_lowest_sell_order(list(order_depth.sell_orders.items()))
 
-            # Condition 1: Sell order is a slightly higher above the historical average (no clue why this gives more profits)
-            # Condition 2: Sell order is a too high above the historical average
-            # Condition 3: Sell order is too low vs 5 sell orders ago
+            # Condition 1: Sell order is a slightly higher than a recent average (small-dip checker)
+            # Condition 2: Sell order is a too high above the historical average (big-dip checker)
+            # Condition 3: Sell order of PICNIC_BASKET1 and PICNIC_BASKET2 is a slightly higher than a recent average (small-dip checker)
+            # Condition 4: Sell order of DJEMBES is a slightly higher than a recent average (small-dip checker)
+            # Condition 5: Sell order is too low vs 5 sell orders ago
             # Either needs to be true for us to sell everything
             condition_one = False
             condition_two = False
             condition_three = False
+            condition_four = False
+            condition_five = False
 
             # Set the condition values
             if sell_order_history.get(product) is not None:
-                # Condition 1
-                historical_average = get_average(sell_order_history[product]) 
-                print(f"historical_average: {historical_average}")
-
-                condition_one = best_ask > (historical_average * 1.001)
+                # Condition 1 (small-dip checker)
+                recents = sell_order_history[product]
+                if len(recents) > 20:
+                    recents = recents[0:20]
                 
-                # Condition 2
-                historical_average = get_average(sell_order_history[product]) 
-                condition_two = best_ask > (historical_average * 1.01)
+                recents_average = get_average(recents) 
+                print(f"recents_average: {recents_average}")
 
-                # Condition 3
+                condition_one = best_ask > (recents_average * 1.001)
+                
+                # Condition 2 (big-dip checker)
+                historical_average = get_average(sell_order_history[product]) 
+                condition_two = best_ask > (historical_average * 1.001)
+
+                # Condition 3 (baskets small-dip checker)
+                if product == "PICNIC_BASKET1" or product == "PICNIC_BASKET2":
+                    recents = sell_order_history[product]
+                    if len(recents) > 10:
+                        recents = recents[0:10]
+                    
+                    recents_average = get_average(recents) 
+                    print(f"recents_average: {recents_average}")
+
+                    condition_three = best_ask > (recents_average * 1.001)
+
+                # Condition 4 (djembes small-dip checker)
+                if product == "DJEMBES":
+                    recents = sell_order_history[product]
+                    if len(recents) > 40:
+                        recents = recents[-40:]
+                    
+                    recents_average = get_average(recents) 
+                    print(f"recents_average: {recents_average}")
+
+                    condition_four = best_ask > (recents_average * 1.001)
+
+                # Condition 4
                 if len(sell_order_history[product]) >= 5:
                     fifth_previous_sell_order = sell_order_history[product][-5]
-                    #condition_three = best_ask < (fifth_previous_sell_order * 0.98)
+                    #condition_five = best_ask < (fifth_previous_sell_order * 0.98)
 
-            if ((condition_one or condition_two or condition_three) and (sell_order_history.get(product) is not None)):
+            if ((condition_one or condition_two or condition_three or condition_four or condition_five) and (sell_order_history.get(product) is not None)):
                 print("CRASHING... CRASHING!!!")
                 sell_order_history[product].append(best_ask)
 
