@@ -1,3 +1,5 @@
+# VV Has hardcoded values
+
 from datamodel import OrderDepth, UserId, TradingState, Order
 from typing import List
 import string
