@@ -1,13 +1,13 @@
 class Crate:
-    def __init__(self, initial_multiplier, inhabitatnts):
+    def __init__(self, initial_multiplier, inhabitants):
         self.initial_multiplier = initial_multiplier
-        self.inhabitatnts = inhabitatnts
+        self.inhabitants = inhabitants
     
     def get_max_percentage(self, target_multiplier):
-        return (self.initial_multiplier / target_multiplier) - self.inhabitatnts
+        return (self.initial_multiplier / target_multiplier) - self.inhabitants
     
     def __repr__(self):
-        return f"Crate({self.initial_multiplier}, {self.inhabitatnts})"
+        return f"Crate({self.initial_multiplier}, {self.inhabitants})"
 
 def sort_by_percent(crates, max_percent_to_be_profitable):
     for i in range(0, len(crates) - 1):
