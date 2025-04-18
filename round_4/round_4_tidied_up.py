@@ -2,6 +2,58 @@ from datamodel import OrderDepth, UserId, TradingState, Order
 from typing import List
 import string
 
+class Product:
+    def __init__(self, name, sell_order_history, current_position):
+        # Name
+        self.name = name
+
+        # Sell order history
+        self.sell_order_history = sell_order_history
+        self.sell_order_average = get_average(self.sell_order_history)
+
+        # Position information
+        self.position = current_position
+        self.position_limit = get_position_limits()[name]
+
+        # Default buy and sell thresholds
+        self.default_offset = self.calculate_offset(10, 3)
+        self.current_offset = self.default_offset
+        self.acceptable_buy_price = self.sell_order_average - self.default_offset
+        self.acceptable_sell_price = self.sell_order_average + self.default_offset
+    
+    def calculate_offset(self, range, divisor=3):
+        if len(self.sell_order_history) == 0:
+            return 0
+
+        index_one = 0
+        index_two = range
+        if len(self.sell_order_history) < (range + 1):
+            index_two = len(self.sell_order_history) - 1
+        
+        sell_offset = (self.sell_order_history[index_one] - self.sell_order_history[-index_two]) / divisor
+        if sell_offset < 0:
+            sell_offset *= -1
+        
+        return sell_offset
+
+    def set_buy_price_offset(self, new_offset):
+        self.acceptable_buy_price -= self.current_offset
+        self.acceptable_buy_price += new_offset
+
+        self.current_offset = new_offset
+
+    def set_sell_price_offset(self, new_offset):
+        self.acceptable_sell_price -= self.current_offset
+        self.acceptable_sell_price += new_offset
+
+        self.current_offset = new_offset
+
+    def set_acceptable_buy_price(self, new_price):
+        self.acceptable_buy_price = new_price - self.current_offset
+    
+    def set_acceptable_sell_price(self, new_price):
+        self.acceptable_sell_price = new_price + self.current_offset
+
 def make_empty_order_history(products):
     order_history = {}
     for product in products:
@@ -70,7 +122,8 @@ def get_position_limits():
             "VOLCANIC_ROCK_VOUCHER_9750": 200,
             "VOLCANIC_ROCK_VOUCHER_10000": 200,
             "VOLCANIC_ROCK_VOUCHER_10250": 200,
-            "VOLCANIC_ROCK_VOUCHER_10500": 200
+            "VOLCANIC_ROCK_VOUCHER_10500": 200,
+            "MAGNIFICENT_MACARONS": 75
         }
     
     return POSITION_LIMITS
@@ -91,10 +144,14 @@ def get_orders(s):
         
         values = key_value_pair[1].strip(" []").split(",")
         
-        for index, value in enumerate(values):
-            values[index] = int(value.strip())
-        
-        d[key] = values
+        if values == ['']:
+            d[key] = []
+            
+        else:
+            for index, value in enumerate(values):
+                values[index] = int(value.strip())
+            
+            d[key] = values
     
     return d
 
@@ -207,58 +264,6 @@ def small_dip_checker(order_history, recents_length, current_order, multiplier):
 
     return current_order > (recents_average * multiplier)
 
-class Product:
-    def __init__(self, name, sell_order_history, current_position):
-        # Name
-        self.name = name
-
-        # Sell order history
-        self.sell_order_history = sell_order_history
-        self.sell_order_average = get_average(self.sell_order_history)
-
-        # Position information
-        self.position = current_position
-        self.position_limit = get_position_limits()[name]
-
-        # Default buy and sell thresholds
-        self.default_offset = self.calculate_offset(10, 3)
-        self.current_offset = self.default_offset
-        self.acceptable_buy_price = self.sell_order_average - self.default_offset
-        self.acceptable_sell_price = self.sell_order_average + self.default_offset
-    
-    def calculate_offset(self, range, divisor=3):
-        if len(self.sell_order_history) == 0:
-            return 0
-
-        index_one = 0
-        index_two = range
-        if len(self.sell_order_history) < (range + 1):
-            index_two = len(self.sell_order_history) - 1
-        
-        sell_offset = (self.sell_order_history[index_one] - self.sell_order_history[-index_two]) / divisor
-        if sell_offset < 0:
-            sell_offset *= -1
-        
-        return sell_offset
-
-    def set_buy_price_offset(self, new_offset):
-        self.acceptable_buy_price -= self.current_offset
-        self.acceptable_buy_price += new_offset
-
-        self.current_offset = new_offset
-
-    def set_sell_price_offset(self, new_offset):
-        self.acceptable_sell_price -= self.current_offset
-        self.acceptable_sell_price += new_offset
-
-        self.current_offset = new_offset
-
-    def set_acceptable_buy_price(self, new_price):
-        self.acceptable_buy_price = new_price - self.current_offset
-    
-    def set_acceptable_sell_price(self, new_price):
-        self.acceptable_sell_price = new_price + self.current_offset
-
 class Trader:
     def run(self, state: TradingState):
         PRODUCT_NAMES = ["RAINFOREST_RESIN",
@@ -274,7 +279,8 @@ class Trader:
                          "VOLCANIC_ROCK_VOUCHER_9750",
                          "VOLCANIC_ROCK_VOUCHER_10000",
                          "VOLCANIC_ROCK_VOUCHER_10250",
-                         "VOLCANIC_ROCK_VOUCHER_10500"]
+                         "VOLCANIC_ROCK_VOUCHER_10500",
+                         "MAGNIFICENT_MACARONS"]
 
         POSITION_LIMITS = get_position_limits()
 
@@ -314,8 +320,8 @@ class Trader:
             """
             order_depth: OrderDepth = state.order_depths[product]
 
-            # Skip the first iteration of trading
-            if sell_order_history.get(product) is None:
+            # Skip the first iteration of trading, also tariffs are scary (boo) (oh no) (spooky)
+            if state.traderData == "" or product == "MAGNIFICENT_MACARONS":
                 print("First iteration, will not do any trading")
                 if len(order_depth.sell_orders) != 0:
                     best_ask, best_ask_amount = get_lowest_sell_order(list(order_depth.sell_orders.items()))
@@ -444,6 +450,8 @@ class Trader:
             # After we make our orders, put those orders in result for that respective product
             result[product] = orders
             current_positions[product] = position
+
+        print(f"WHAT IS SELL: {sell_order_history}")
 
         newData = []
         newData.append(sell_order_history)
