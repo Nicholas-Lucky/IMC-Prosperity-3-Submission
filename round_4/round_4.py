@@ -17,7 +17,8 @@ def get_position_limits():
             "VOLCANIC_ROCK_VOUCHER_9750": 200,
             "VOLCANIC_ROCK_VOUCHER_10000": 200,
             "VOLCANIC_ROCK_VOUCHER_10250": 200,
-            "VOLCANIC_ROCK_VOUCHER_10500": 200
+            "VOLCANIC_ROCK_VOUCHER_10500": 200,
+            "MAGNIFICENT_MACARONS": 75
         }
     
     return POSITION_LIMITS
@@ -181,10 +182,11 @@ class Trader:
             """
             order_depth: OrderDepth = state.order_depths[product]
 
-            if sell_order_history.get(product) is None:
+            if sell_order_history.get(product) is None or product == "MAGNIFICENT_MACARONS":
                 print("First iteration AHOY THERE!!!")
-                best_ask, best_ask_amount = get_lowest_sell_order(list(order_depth.sell_orders.items()))
-                sell_order_history[product] = [best_ask]
+                if len(order_depth.sell_orders) != 0:
+                    best_ask, best_ask_amount = get_lowest_sell_order(list(order_depth.sell_orders.items()))
+                    sell_order_history[product] = [best_ask]
                 continue
 
             # Make a list of orders
@@ -233,14 +235,14 @@ class Trader:
                     djembe = get_average(sell_order_history["DJEMBES"])
 
                     acceptable_buy_price = croissants + jams + djembe - 5
-                    acceptable_sell_price = acceptable_buy_price + sell_offset
+                    acceptable_sell_price = croissants + jams + djembe + sell_offset
 
                 if product == "PICNIC_BASKET2":
                     croissants = (get_average(sell_order_history["CROISSANTS"])) * 4
                     jams = (get_average(sell_order_history["JAMS"])) * 2
 
                     acceptable_buy_price = croissants + jams - 5
-                    acceptable_sell_price = acceptable_buy_price + sell_offset
+                    acceptable_sell_price = croissants + jams + sell_offset
                 
                 if product == "VOLCANIC_ROCK":
                     acceptable_buy_price = get_average(sell_order_history[product]) - sell_offset
@@ -263,10 +265,10 @@ class Trader:
                     acceptable_sell_price = get_average(sell_order_history[product]) + sell_offset
 
                 if product == "VOLCANIC_ROCK_VOUCHER_10500":
-                    """ best_ask, best_ask_amount = get_lowest_sell_order(list(order_depth.sell_orders.items()))
-                    sell_order_history[product].append(best_ask)
-                    continue """
+                    acceptable_buy_price = get_average(sell_order_history[product]) - sell_offset
+                    acceptable_sell_price = get_average(sell_order_history[product]) + sell_offset
 
+                if product == "MAGNIFICENT_MACARONS":
                     acceptable_buy_price = get_average(sell_order_history[product]) - sell_offset
                     acceptable_sell_price = get_average(sell_order_history[product]) + sell_offset
 
