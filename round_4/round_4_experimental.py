@@ -1,15 +1,23 @@
 from datamodel import OrderDepth, UserId, TradingState, Order
 from typing import List
+from numpy import mean, std
 import string
 
 class Product:
-    def __init__(self, name, sell_order_history, current_position):
+    def __init__(self, name, sell_order_history, buy_order_history, current_position):
         # Name
         self.name = name
 
         # Sell order history
         self.sell_order_history = sell_order_history
-        self.sell_order_average = get_average(self.sell_order_history) * 0.9
+        self.sell_order_average = get_average(self.sell_order_history)
+
+        # Buy order history
+        self.buy_order_history = buy_order_history
+        self.buy_order_average = get_average(self.buy_order_history)
+
+        # Mid Price
+        self.average_mid_price = (self.sell_order_average + self.sell_order_average) / 2
 
         # Position information
         self.position = current_position
@@ -18,8 +26,8 @@ class Product:
         # Default buy and sell thresholds
         self.default_offset = self.calculate_offset(10, 3)
         self.current_offset = self.default_offset
-        self.acceptable_buy_price = self.sell_order_average - self.default_offset
-        self.acceptable_sell_price = self.sell_order_average + self.default_offset
+        self.acceptable_buy_price = self.average_mid_price - self.default_offset
+        self.acceptable_sell_price = self.average_mid_price + self.default_offset
     
     def calculate_offset(self, range, divisor=3):
         if len(self.sell_order_history) == 0:
@@ -54,6 +62,62 @@ class Product:
     def set_acceptable_sell_price(self, new_price):
         self.acceptable_sell_price = new_price + self.current_offset
 
+class Macaron(Product):
+    def __init__(self, name, sell_order_history, buy_order_history, current_position, observation_info_history, current_observation_info):
+        #super().__init__(name, sell_order_history, buy_order_history, current_position)
+        self.name = name
+
+        self.sell_order_history = sell_order_history
+        self.buy_order_history = buy_order_history
+
+        self.sell_order_average = mean(sell_order_history)
+        self.buy_order_average = mean(buy_order_history)
+
+        self.average_mid_price = (self.sell_order_average + self.sell_order_average) / 2
+
+        self.position = current_position
+
+        self.observation_info_history = observation_info_history
+        
+        self.historical_ask_price_mean = mean(observation_info_history["askPrice"])
+        self.historical_bid_price_mean = mean(observation_info_history["bidPrice"])
+        self.historical_export_tariff_mean = mean(observation_info_history["exportTariff"])
+        self.historical_import_tariff_mean = mean(observation_info_history["importTariff"])
+        self.historical_sugar_price_mean = mean(observation_info_history["sugarPrice"])
+        self.historical_sunlight_mean = mean(observation_info_history["sunlightIndex"])
+        self.historical_transport_fees_mean = mean(observation_info_history["transportFees"])
+
+        self.historical_ask_price_std = std(observation_info_history["askPrice"])
+        self.historical_bid_price_std = std(observation_info_history["bidPrice"])
+        self.historical_export_tariff_std = std(observation_info_history["exportTariff"])
+        self.historical_import_tariff_std = std(observation_info_history["importTariff"])
+        self.historical_sugar_price_std = std(observation_info_history["sugarPrice"])
+        self.historical_sunlight_std = std(observation_info_history["sunlightIndex"])
+        self.historical_transport_fees_std = std(observation_info_history["transportFees"])
+
+        self.current_observation_info = current_observation_info
+
+        self.ask_price = current_observation_info.askPrice
+        self.bid_price = current_observation_info.bidPrice
+        self.export_tariff = current_observation_info.exportTariff
+        self.import_tariff = current_observation_info.importTariff
+        self.sugar_price = current_observation_info.sugarPrice
+        self.sunlight = current_observation_info.sunlightIndex
+        self.transport_fees = current_observation_info.transportFees
+
+        #self.normalized_ask_price = (self.ask_price - self.historical_ask_price_mean) / self.historical_ask_price_std
+        #self.normalized_bid_price = (self.bid_price - self.historical_bid_price_mean) / self.historical_bid_price_std
+        self.normalized_export_tariff = (self.export_tariff - self.historical_export_tariff_mean) / self.historical_export_tariff_std
+        self.normalized_import_tariff = (self.import_tariff - self.historical_import_tariff_mean) / self.historical_import_tariff_std
+        self.normalized_sugar_price = (self.sugar_price - self.historical_sugar_price_mean) / self.historical_sugar_price_std
+        self.normalized_sunlight = (self.sunlight - self.historical_sunlight_mean) / self.historical_sunlight_std
+        self.normalized_transport_fees = (self.transport_fees - self.historical_transport_fees_mean) / self.historical_transport_fees_std
+
+        self.MVI = (self.normalized_export_tariff * 0.1) + (self.normalized_import_tariff * 0.1) + (self.normalized_sugar_price * 0.1) + (self.normalized_sunlight * -0.4) + (self.normalized_transport_fees * 0.1)
+        self.acceptable_buy_price = self.average_mid_price * self.MVI
+        self.acceptable_sell_price = self.acceptable_buy_price
+
+
 def make_empty_order_history(products):
     order_history = {}
     for product in products:
@@ -68,26 +132,29 @@ def make_empty_position_dictionary(products):
     
     return position_dictionary
 
-def initialize_product_information(products, sell_order_history, current_positions):
+def initialize_product_information(products, sell_order_history, buy_order_history, current_positions, observation_info_history, current_observation_info):
     product_info = {}
     for product in products:
-        product_info[product] = Product(product, sell_order_history[product], current_positions[product])
+        if product == "MAGNIFICENT_MACARONS":
+            product_info["MAGNIFICENT_MACARONS"] = Macaron(product, sell_order_history[product], buy_order_history[product], current_positions[product], observation_info_history, current_observation_info)
+            continue
+        product_info[product] = Product(product, sell_order_history[product], buy_order_history[product], current_positions[product])
     
     # Set picnic basket buy and sell thresholds
-    croissants = product_info["CROISSANTS"].sell_order_average * 6
-    jams = product_info["JAMS"].sell_order_average * 3
-    djembe = product_info["DJEMBES"].sell_order_average
+    croissants = product_info["CROISSANTS"].average_mid_price * 6
+    jams = product_info["JAMS"].average_mid_price * 3
+    djembe = product_info["DJEMBES"].average_mid_price
     product_info["PICNIC_BASKET1"].set_acceptable_buy_price(croissants + jams + djembe)
     product_info["PICNIC_BASKET1"].set_acceptable_sell_price(croissants + jams + djembe)
 
-    croissants = product_info["CROISSANTS"].sell_order_average * 4
-    jams = product_info["JAMS"].sell_order_average * 2
+    croissants = product_info["CROISSANTS"].average_mid_price * 4
+    jams = product_info["JAMS"].average_mid_price * 2
     product_info["PICNIC_BASKET2"].set_acceptable_buy_price(croissants + jams)
     product_info["PICNIC_BASKET2"].set_acceptable_sell_price(croissants + jams)
 
     # Manual offset adjustments
-    product_info["RAINFOREST_RESIN"].set_buy_price_offset(-1)
-    product_info["RAINFOREST_RESIN"].set_sell_price_offset(1)
+    product_info["RAINFOREST_RESIN"].set_buy_price_offset(0)
+    product_info["RAINFOREST_RESIN"].set_sell_price_offset(0)
 
     product_info["KELP"].set_buy_price_offset(0)
     product_info["KELP"].set_sell_price_offset(3)
@@ -149,7 +216,7 @@ def get_orders(s):
             
         else:
             for index, value in enumerate(values):
-                values[index] = int(value.strip())
+                values[index] = float(value.strip())
             
             d[key] = values
     
@@ -186,10 +253,12 @@ def convert_trading_data(s):
     sell_orders = get_orders(dList[0])
     buy_orders = get_orders(dList[1])
     positions = get_positions(dList[2])
+    macaron_info = get_orders(dList[3])
 
     dList[0] = sell_orders
     dList[1] = buy_orders
     dList[2] = positions
+    dList[3] = macaron_info
     
     return dList
 
@@ -197,16 +266,7 @@ def get_average(prices):
     if len(prices) == 0:
         return 0
     
-    weighted_sum = sum(prices)
-    length = len(prices)
-
-    # Kinda weighted ave
-    """ if length > 10:
-        for i in range(10, 0, -1):
-            weighted_sum = weighted_sum + (i * prices[i - 11])
-            length += i """
-
-    return weighted_sum / length
+    return sum(prices) / len(prices)
 
 def voucher_makes_sense(voucher_amount, most_recent_volcanic_rock_sell_order):
     upper_bound = most_recent_volcanic_rock_sell_order * 1.02
@@ -269,11 +329,18 @@ def small_dip_checker(order_history, recents_length, current_order, multiplier):
         recents = recents[0:recents_length]
     
     recents_average = get_average(recents) 
-    print(f"recents_average: {recents_average}")
+    #print(f"recents_average: {recents_average}")
 
     return current_order > (recents_average * multiplier)
 
 def update_sell_order_history(history, product, new_addition):
+    max_history_length = 150
+
+    if len(history[product]) > max_history_length:
+        history[product].pop(0)
+    history[product].append(new_addition)
+
+def update_buy_order_history(history, product, new_addition):
     max_history_length = 150
 
     if len(history[product]) > max_history_length:
@@ -299,23 +366,43 @@ class Trader:
                          "MAGNIFICENT_MACARONS"]
 
         POSITION_LIMITS = get_position_limits()
-
-        # Print state properties
-        print("traderData: " + state.traderData)
-        print("Observations: " + str(state.observations))
-        print(f"Own trades: {state.own_trades}")
         
+        MACARON_INFO = ["askPrice",
+                        "bidPrice",
+                        "exportTariff",
+                        "importTariff",
+                        "sugarPrice",
+                        "sunlightIndex",
+                        "transportFees"]
+        
+        # Print state properties
+        #print("traderData: " + state.traderData)
+        print("Observations: " + str(state.observations))
+        #print(f"Own trades: {state.own_trades}")
+
         # Make relavant dictionaries (by default)
         sell_order_history = make_empty_order_history(PRODUCT_NAMES)
         buy_order_history = make_empty_order_history(PRODUCT_NAMES)
         current_positions = make_empty_position_dictionary(PRODUCT_NAMES)
+        previous_macaron_information = make_empty_order_history(MACARON_INFO)
 
         # Update the dictionaries with previous trading data if it exists
         if state.traderData != "":
-            sell_order_history, buy_order_history, current_positions = convert_trading_data(state.traderData)
+            sell_order_history, buy_order_history, current_positions, previous_macaron_information = convert_trading_data(state.traderData)
         
-        products = initialize_product_information(PRODUCT_NAMES, sell_order_history, current_positions)
+        macaron_state = state.observations.conversionObservations["MAGNIFICENT_MACARONS"]
+        print(f"WE'RE BREATHING SUNLIGHTTT {macaron_state.sunlightIndex}")
+
+        products = initialize_product_information(PRODUCT_NAMES, sell_order_history, buy_order_history, current_positions, previous_macaron_information, macaron_state)
         
+        previous_macaron_information["askPrice"].append(macaron_state.askPrice)
+        previous_macaron_information["bidPrice"].append(macaron_state.bidPrice)
+        previous_macaron_information["exportTariff"].append(macaron_state.exportTariff)
+        previous_macaron_information["importTariff"].append(macaron_state.importTariff)
+        previous_macaron_information["sugarPrice"].append(macaron_state.sugarPrice)
+        previous_macaron_information["sunlightIndex"].append(macaron_state.sunlightIndex)
+        previous_macaron_information["transportFees"].append(macaron_state.transportFees)
+
         # Orders to be placed on exchange matching engine
         result = {}
 
@@ -337,17 +424,23 @@ class Trader:
             order_depth: OrderDepth = state.order_depths[product]
 
             # Skip the first iteration of trading, also tariffs are scary (boo) (oh no) (spooky)
-            if state.traderData == "" or product == "MAGNIFICENT_MACARONS":
-                print("First iteration, will not do any trading")
+            #if state.traderData == "" or product == "MAGNIFICENT_MACARONS":
+            if state.traderData == "":
+                #print("First iteration, will not do any trading")
                 if len(order_depth.sell_orders) != 0:
                     best_ask, best_ask_amount = get_lowest_sell_order(list(order_depth.sell_orders.items()))
                     update_sell_order_history(sell_order_history, product, best_ask)
-                    #sell_order_history[product].append(best_ask)
+
+                    best_bid, best_bid_amount = get_highest_buy_order(list(order_depth.buy_orders.items()))
+                    update_buy_order_history(buy_order_history, product, best_bid)
                 continue
             
             # Get the current position of the product
             position = products[product].position
-            print(f"Current position: {position}")
+            #print(f"Current position: {position}")
+            
+            # Initialize the product class
+            #Rainforest_Resin = Product("RAINFOREST_RESIN", sell_order_history["RAINFOREST_RESIN", ])
 
             # Make a list of orders
             orders: List[Order] = []
@@ -360,7 +453,7 @@ class Trader:
             print(f"Acceptable sell price: {acceptable_sell_price}")
 
             # I guess... how many buy and sell orders?
-            print(f"Buy Order depth: {len(order_depth.buy_orders)}, Sell order depth: {len(order_depth.sell_orders)}")
+            #print(f"Buy Order depth: {len(order_depth.buy_orders)}, Sell order depth: {len(order_depth.sell_orders)}")
 
             # Make conditions (for a crash or not) in which we would want to sell everything
             best_ask, best_ask_amount = get_lowest_sell_order(list(order_depth.sell_orders.items()))
@@ -378,7 +471,9 @@ class Trader:
             if (condition_one or condition_two or condition_three or condition_four):
                 print("I'M GOING TO CRASH OUT !!!")
                 update_sell_order_history(sell_order_history, product, best_ask)
-                #sell_order_history[product].append(best_ask)
+
+                best_bid, best_bid_amount = get_highest_buy_order(list(order_depth.buy_orders.items()))
+                update_buy_order_history(buy_order_history, product, best_bid)
 
                 # Sell everything (sell to all buy orders until position <= 0)
                 for buy_order in list(order_depth.buy_orders.items()):
@@ -406,14 +501,14 @@ class Trader:
                 # best_ask = price
                 # best_ask_amount = quantity
                 best_ask, best_ask_amount = get_lowest_sell_order(list(order_depth.sell_orders.items()))
-                print(f"Sell orders: {list(order_depth.sell_orders.items())}")
+                #print(f"Sell orders: {list(order_depth.sell_orders.items())}")
 
                 # Add the lowest sell order to sell_order_history
                 # Default: Keep the past 150 orders
-                update_sell_order_history(sell_order_history, product, best_ask)
                 """ if len(sell_order_history[product]) > 150:
                     sell_order_history[product].pop(0)
                 sell_order_history[product].append(best_ask) """
+                update_sell_order_history(sell_order_history, product, best_ask)
 
                 # or best_ask < (sell_order_history[product][-5] * 0.92)
 
@@ -423,19 +518,19 @@ class Trader:
 
                 # If there are more than 75 sell orders in the sell order history (max is 150)
                 # TODO: Discuss about this
-                """ if len(sell_order_history[product]) > 7500:
+                if len(sell_order_history[product]) > 7500:
                     # If the current sell order price is 0.5% above the 10th most recent sell order price
                     if best_ask > (sell_order_history[product][-10] * 1.05):
                         print("BIG JUMP!!!")
 
                         # Reduce the sell order history by 70 (remove the 70 oldest)
                         for i in range(70, len(sell_order_history[product])):
-                            sell_order_history[product].pop(0) """
+                            sell_order_history[product].pop(0)
 
-                #sell_order_history[product].append(best_ask)
+                sell_order_history[product].append(best_ask)
                 
                 # If the bot is selling for less than we expect (wahoo)
-                if int(best_ask) < acceptable_buy_price and int(best_ask) > products[product].sell_order_average * 0.9:
+                if int(best_ask) < acceptable_buy_price:
                     # Buy some of that I guess
                     print(f"BUY {(-1 * best_ask_amount)} x {best_ask}")
                     buy_to_bot(orders, position, POSITION_LIMITS[product], product, best_ask, best_ask_amount)
@@ -450,9 +545,7 @@ class Trader:
                 best_bid, best_bid_amount = get_highest_buy_order(list(order_depth.buy_orders.items()))
                 print(f"Buy orders: {list(order_depth.buy_orders.items())}")
                 
-                # TODO: Could allow for all products to have a buy order in case
-                if product == "SQUID_INK":
-                    buy_order_history[product].append(best_bid)
+                update_buy_order_history(buy_order_history, product, best_bid)
 
                 # If the bot is buying for more than we expect (wahoo)
                 if int(best_bid) > acceptable_sell_price:
@@ -467,17 +560,18 @@ class Trader:
             result[product] = orders
             current_positions[product] = position
 
-        print(f"WHAT IS SELL: {sell_order_history}")
+        #print(f"WHAT IS SELL: {sell_order_history}")
 
         newData = []
         newData.append(sell_order_history)
         newData.append(buy_order_history)
         newData.append(current_positions)
+        newData.append(previous_macaron_information)
 
         # String value holding Trader state data required. 
         # It will be delivered as TradingState.traderData on next execution.
         traderData = str(newData)
 
         # Sample conversion request. Check more details below. 
-        conversions = 1
+        conversions = 0
         return result, conversions, traderData
