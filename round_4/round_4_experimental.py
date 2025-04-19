@@ -139,7 +139,17 @@ class Macaron(Product):
         #self.acceptable_buy_price = current_average_mid_price * self.MVI_multiplier
         #self.acceptable_buy_price = self.historical_average_mid_price * self.MVI_multiplier
 
-        self.MVI_multiplier = (self.normalized_export_tariff * 0.1) + (self.normalized_import_tariff * 0.1) + (self.normalized_sugar_price * 0.1) + (self.normalized_sunlight * -0.4) + (self.normalized_transport_fees * 0.1)
+        self.export_tariff_weight = 0.1
+        self.import_tariff_weight = 0.1
+        self.sugar_price_weight = 0.1
+        self.sunlight_weight = -0.4
+        self.transport_fees_weight = 0.1
+
+        self.MVI_multiplier = (self.normalized_export_tariff * self.export_tariff_weight) + \
+                              (self.normalized_import_tariff * self.import_tariff_weight) + \
+                              (self.normalized_sugar_price * self.sugar_price_weight) + \
+                              (self.normalized_sunlight * self.sunlight_weight) + \
+                              (self.normalized_transport_fees * self.transport_fees_weight)
         
         self.hybrid_average_mid_price = (0.3 * self.historical_average_mid_price) + (0.7 * self.current_average_mid_price)
         self.acceptable_buy_price = self.hybrid_average_mid_price * self.MVI_multiplier
