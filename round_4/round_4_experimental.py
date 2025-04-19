@@ -72,8 +72,7 @@ class Macaron(Product):
 
         self.sell_order_average = mean(sell_order_history)
         self.buy_order_average = mean(buy_order_history)
-
-        self.average_mid_price = (self.sell_order_average + self.sell_order_average) / 2
+        self.historical_average_mid_price = (self.sell_order_average + self.sell_order_average) / 2
 
         self.position = current_position
 
@@ -95,6 +94,8 @@ class Macaron(Product):
         self.historical_sunlight_std = std(observation_info_history["sunlightIndex"])
         self.historical_transport_fees_std = std(observation_info_history["transportFees"])
 
+        self.current_average_mid_price = (self.historical_ask_price_mean + self.historical_bid_price_mean) / 2
+
         self.current_observation_info = current_observation_info
 
         self.ask_price = current_observation_info.askPrice
@@ -105,18 +106,44 @@ class Macaron(Product):
         self.sunlight = current_observation_info.sunlightIndex
         self.transport_fees = current_observation_info.transportFees
 
-        #self.normalized_ask_price = (self.ask_price - self.historical_ask_price_mean) / self.historical_ask_price_std
-        #self.normalized_bid_price = (self.bid_price - self.historical_bid_price_mean) / self.historical_bid_price_std
-        self.normalized_export_tariff = (self.export_tariff - self.historical_export_tariff_mean) / self.historical_export_tariff_std
-        self.normalized_import_tariff = (self.import_tariff - self.historical_import_tariff_mean) / self.historical_import_tariff_std
-        self.normalized_sugar_price = (self.sugar_price - self.historical_sugar_price_mean) / self.historical_sugar_price_std
-        self.normalized_sunlight = (self.sunlight - self.historical_sunlight_mean) / self.historical_sunlight_std
-        self.normalized_transport_fees = (self.transport_fees - self.historical_transport_fees_mean) / self.historical_transport_fees_std
+        # maybe comment out
+        """ self.normalized_ask_price = 0
+        if self.historical_ask_price_std != 0:
+            self.normalized_ask_price = (self.ask_price - self.historical_ask_price_mean) / self.historical_ask_price_std
+        
+        self.normalized_bid_price = 0
+        if self.historical_bid_price_std != 0:
+            self.normalized_bid_price = (self.bid_price - self.historical_bid_price_mean) / self.historical_bid_price_std """
 
-        self.MVI = (self.normalized_export_tariff * 0.1) + (self.normalized_import_tariff * 0.1) + (self.normalized_sugar_price * 0.1) + (self.normalized_sunlight * -0.4) + (self.normalized_transport_fees * 0.1)
-        self.acceptable_buy_price = self.average_mid_price * self.MVI
+        self.normalized_export_tariff = 0
+        if self.historical_export_tariff_std != 0:
+            self.normalized_export_tariff = (self.export_tariff - self.historical_export_tariff_mean) / self.historical_export_tariff_std
+        
+        self.normalized_import_tariff = 0
+        if self.historical_import_tariff_std != 0:
+            self.normalized_import_tariff = (self.import_tariff - self.historical_import_tariff_mean) / self.historical_import_tariff_std
+        
+        self.normalized_sugar_price = 0
+        if self.historical_sugar_price_std != 0:
+            self.normalized_sugar_price = (self.sugar_price - self.historical_sugar_price_mean) / self.historical_sugar_price_std
+        
+        self.normalized_sunlight = 0
+        if self.historical_sunlight_std != 0:
+            self.normalized_sunlight = (self.sunlight - self.historical_sunlight_mean) / self.historical_sunlight_std
+        
+        self.normalized_transport_fees = 0
+        if self.historical_transport_fees_std != 0:
+            self.normalized_transport_fees = (self.transport_fees - self.historical_transport_fees_mean) / self.historical_transport_fees_std
+
+        #self.MVI_multiplier = (self.normalized_ask_price * 0.1) + (self.normalized_bid_price * 0.1) + (self.normalized_export_tariff * 0.1) + (self.normalized_import_tariff * 0.1) + (self.normalized_sugar_price * 0.1) + (self.normalized_sunlight * -0.4) + (self.normalized_transport_fees * 0.1)
+        #self.acceptable_buy_price = current_average_mid_price * self.MVI_multiplier
+        #self.acceptable_buy_price = self.historical_average_mid_price * self.MVI_multiplier
+
+        self.MVI_multiplier = (self.normalized_export_tariff * 0.1) + (self.normalized_import_tariff * 0.1) + (self.normalized_sugar_price * 0.1) + (self.normalized_sunlight * -0.4) + (self.normalized_transport_fees * 0.1)
+        
+        self.hybrid_average_mid_price = (0.3 * self.historical_average_mid_price) + (0.7 * self.current_average_mid_price)
+        self.acceptable_buy_price = self.hybrid_average_mid_price * self.MVI_multiplier
         self.acceptable_sell_price = self.acceptable_buy_price
-
 
 def make_empty_order_history(products):
     order_history = {}
