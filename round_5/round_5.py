@@ -69,31 +69,78 @@ class Macaron(Product):
 
         self.sell_order_history = sell_order_history
         self.buy_order_history = buy_order_history
+        
+        self.sell_order_average = 0
+        if len(sell_order_history) > 0:
+            self.sell_order_average = mean(sell_order_history)
+        
+        self.buy_order_average = 0
+        if len(buy_order_history) > 0:
+            self.buy_order_average = mean(buy_order_history)
 
-        self.sell_order_average = mean(sell_order_history)
-        self.buy_order_average = mean(buy_order_history)
         self.historical_average_mid_price = (self.sell_order_average + self.sell_order_average) / 2
 
         self.position = current_position
 
         self.observation_info_history = observation_info_history
         
-        self.historical_ask_price_mean = mean(observation_info_history["askPrice"])
-        self.historical_bid_price_mean = mean(observation_info_history["bidPrice"])
-        self.historical_export_tariff_mean = mean(observation_info_history["exportTariff"])
-        self.historical_import_tariff_mean = mean(observation_info_history["importTariff"])
-        self.historical_sugar_price_mean = mean(observation_info_history["sugarPrice"])
-        self.historical_sunlight_mean = mean(observation_info_history["sunlightIndex"])
-        self.historical_transport_fees_mean = mean(observation_info_history["transportFees"])
+        self.historical_ask_price_mean = 0
+        if len(observation_info_history["askPrice"]) > 0:
+            self.historical_ask_price_mean = mean(observation_info_history["askPrice"])
 
-        self.historical_ask_price_std = std(observation_info_history["askPrice"])
-        self.historical_bid_price_std = std(observation_info_history["bidPrice"])
-        self.historical_export_tariff_std = std(observation_info_history["exportTariff"])
-        self.historical_import_tariff_std = std(observation_info_history["importTariff"])
-        self.historical_sugar_price_std = std(observation_info_history["sugarPrice"])
-        self.historical_sunlight_std = std(observation_info_history["sunlightIndex"])
-        self.historical_transport_fees_std = std(observation_info_history["transportFees"])
+        self.historical_bid_price_mean = 0
+        if len(observation_info_history["bidPrice"]) > 0:
+            self.historical_bid_price_mean = mean(observation_info_history["bidPrice"])
 
+        self.historical_export_tariff_mean = 0
+        if len(observation_info_history["exportTariff"]) > 0:
+            self.historical_export_tariff_mean = mean(observation_info_history["exportTariff"])
+
+        self.historical_import_tariff_mean = 0
+        if len(observation_info_history["importTariff"]) > 0:
+            self.historical_import_tariff_mean = mean(observation_info_history["importTariff"])
+
+        self.historical_sugar_price_mean = 0
+        if len(observation_info_history["sugarPrice"]) > 0:
+            self.historical_sugar_price_mean = mean(observation_info_history["sugarPrice"])
+
+        self.historical_sunlight_mean = 0
+        if len(observation_info_history["sunlightIndex"]) > 0:
+            self.historical_sunlight_mean = mean(observation_info_history["sunlightIndex"])
+
+        self.historical_transport_fees_mean = 0
+        if len(observation_info_history["transportFees"]) > 0:
+            self.historical_transport_fees_mean = mean(observation_info_history["transportFees"])
+
+
+        self.historical_ask_price_std = 0
+        if len(observation_info_history["askPrice"]) > 0:
+            self.historical_ask_price_std = std(observation_info_history["askPrice"])
+        
+        self.historical_bid_price_std = 0
+        if len(observation_info_history["bidPrice"]) > 0:
+            self.historical_bid_price_std = std(observation_info_history["bidPrice"])
+        
+        self.historical_export_tariff_std = 0
+        if len(observation_info_history["exportTariff"]) > 0:
+            self.historical_export_tariff_std = std(observation_info_history["exportTariff"])
+        
+        self.historical_import_tariff_std = 0
+        if len(observation_info_history["importTariff"]) > 0:
+            self.historical_import_tariff_std = std(observation_info_history["importTariff"])
+        
+        self.historical_sugar_price_std = 0
+        if len(observation_info_history["sugarPrice"]) > 0:
+            self.historical_sugar_price_std = std(observation_info_history["sugarPrice"])
+        
+        self.historical_sunlight_std = 0
+        if len(observation_info_history["sunlightIndex"]) > 0:
+            self.historical_sunlight_std = std(observation_info_history["sunlightIndex"])
+        
+        self.historical_transport_fees_std = 0
+        if len(observation_info_history["transportFees"]) > 0:
+            self.historical_transport_fees_std = std(observation_info_history["transportFees"])
+        
         self.current_average_mid_price = (self.historical_ask_price_mean + self.historical_bid_price_mean) / 2
 
         self.current_observation_info = current_observation_info
