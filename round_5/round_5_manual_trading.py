@@ -4,6 +4,82 @@
 # https://www.google.com/search?q=numpy+t+%40&rlz=1C1VDKB_enUS970US970&oq=numpy+t+%40&gs_lcrp=EgZjaHJvbWUyBggAEEUYOdIBCDE2ODNqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8
 # import numpy as np
 
+def get_historical_user_picked_sentiments_info():
+    sentiments = {
+        'Haystacks': '+',
+        'Ranch sauce': '++',
+        'Cacti Needle': '----',
+        'Solar panels': '--',
+        'Red Flags': '+',
+        'VR Monocle': '+++',
+        'Quantum Coffee': '---',
+        'Moonshine': '-',
+        'Striped shirts': '+'
+    }
+
+    sentiment_multipliers = {
+        '+++': 0.25,
+        '++': 0.15,
+        '+': 0.05,
+        '-': -0.05,
+        '--': -0.11,
+        '---': -0.43,
+        '----': -0.6
+    }
+
+    return sentiments, sentiment_multipliers
+
+def get_historical_optimal_sentiments_info():
+    # Historical data for reference
+    historical_optimal_product_sentiment_multipliers = {
+        'Refrigerators': 0.020713448079427082,
+        'Earrings': 0.12367402886284722,
+        'Blankets': -0.32888405330882353,
+        'Sleds': -0.2829537109375,
+        'Sculptures': 0.19637428385416666,
+        'PS6': 0.3095545703125,
+        'Serum': -0.8157531666666666,
+        'Lamps': 6.103515625e-05,
+        'Chocolate': -0.000404595947265625
+    }
+
+    # Haystacks similar to Refrigerators
+    # Ranch sauce similar to Earrings
+    # Cacti Needle similar to Blankets (similar blaming tone)
+    # Solar panels similar to Sleds
+    # Red Flags similar to Sculptures
+    # VR Monocle similar to PS6
+    # Quantum Coffee similar to Serum
+
+    # Moonshine similar to Chocolate??? (not sure)
+    # Striped shirts similar to Lamps??? (Striped shirts will probably have little effect like the lamps?) (not sure)
+
+    sentiments = {
+        'Haystacks': '++',
+        'Ranch sauce': '+++',
+        'Cacti Needle': '---',
+        'Solar panels': '--',
+        'Red Flags': '++++',
+        'VR Monocle': '+++++',
+        'Quantum Coffee': '----',
+        'Moonshine': '-',
+        'Striped shirts': '+'
+    }
+
+    sentiment_multipliers = {
+        '+++++': 0.3095545703125,
+        '++++': 0.19637428385416666,
+        '+++': 0.12367402886284722,
+        '++': 0.020713448079427082,
+        '+': 6.103515625e-05,
+        '-': -0.000404595947265625,
+        '--': -0.2829537109375,
+        '---': -0.32888405330882353,
+        '----': -0.8157531666666666
+    }
+
+    return sentiments, sentiment_multipliers
+
 def make_product_multipliers(sentiments, sentiment_multipliers):
     d = {}
     for product, sentiment in sentiments.items():
@@ -51,49 +127,8 @@ def print_format_two(products, optimal_profits, initial_capital):
     print(f"Total expected profit: {round(total_expected_profit, 2)}")
     print(f"Total %/capital used: {total_percent}% = {initial_capital * (total_percent / 100)} seashells")
 
-""" sentiments = {
-    'Haystacks': '+',
-    'Ranch sauce': '++',
-    'Cacti Needle': '----',
-    'Solar panels': '--',
-    'Red Flags': '+',
-    'VR Monocle': '+++',
-    'Quantum Coffee': '---',
-    'Moonshine': '-',
-    'Striped shirts': '+'
-}
-
-sentiment_multipliers = {
-    '+': 0.05,
-    '++': 0.15,
-    '+++': 0.25,
-    '-': -0.05,
-    '--': -0.11,
-    '---': -0.43,
-    '----': -0.6
-} """
-
-sentiments = {
-    'Refrigerators': '+',
-    'Earrings': '++',
-    'Blankets': '---',
-    'Sleds': '--',
-    'Sculptures': '++',
-    'PS6': '+++',
-    'Serum': '----',
-    'Lamps': '+',
-    'Chocolate': '-'
-}
-
-sentiment_multipliers = {
-    '+': 0.05,
-    '++': 0.15,
-    '+++': 0.25,
-    '-': -0.05,
-    '--': -0.1,
-    '---': -0.4,
-    '----': -0.6
-}
+#sentiments, sentiment_multipliers = get_historical_user_picked_sentiments_info()
+sentiments, sentiment_multipliers = get_historical_optimal_sentiments_info()
 
 products = list(sentiments.keys())
 product_multipliers = make_product_multipliers(sentiments, sentiment_multipliers)
