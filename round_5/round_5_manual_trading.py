@@ -11,8 +11,9 @@ def make_product_multipliers(sentiments, sentiment_multipliers):
 
     return d
 
-def print_format_one(products, optimal_profits):
+def print_format_one(products, optimal_profits, initial_capital):
     total_expected_profit = 0
+    total_percent = 0
 
     print("------- OPTIMAL %'S TO ALLOCATE PER PRODUCT (POSITIVE = BUY, NEGATIVE = SELL) -------\n")
     for product in products:
@@ -22,12 +23,15 @@ def print_format_one(products, optimal_profits):
         print(f"{product}: {optimal_pi_i}%")
         print(f"    Expected profit: {expected_profit}\n")
 
+        total_percent += abs(optimal_pi_i)
         total_expected_profit += expected_profit
     
-    print(f"Total expected profit: {total_expected_profit}")
+    print(f"Total expected profit: {round(total_expected_profit, 2)}")
+    print(f"Total %/capital used: {total_percent}% = {initial_capital * (total_percent / 100)} seashells")
 
-def print_format_two(products, optimal_profits):
+def print_format_two(products, optimal_profits, initial_capital):
     total_expected_profit = 0
+    total_percent = 0
 
     print("------- OPTIMAL %'S TO ALLOCATE PER PRODUCT -------\n")
     for product in products:
@@ -41,11 +45,13 @@ def print_format_two(products, optimal_profits):
 
         print(f"    Expected profit: {expected_profit}\n")
 
+        total_percent += abs(optimal_pi_i)
         total_expected_profit += expected_profit
     
-    print(f"Total expected profit: {total_expected_profit}")
+    print(f"Total expected profit: {round(total_expected_profit, 2)}")
+    print(f"Total %/capital used: {total_percent}% = {initial_capital * (total_percent / 100)} seashells")
 
-sentiments = {
+""" sentiments = {
     'Haystacks': '+',
     'Ranch sauce': '++',
     'Cacti Needle': '----',
@@ -64,6 +70,28 @@ sentiment_multipliers = {
     '-': -0.05,
     '--': -0.11,
     '---': -0.43,
+    '----': -0.6
+} """
+
+sentiments = {
+    'Refrigerators': '+',
+    'Earrings': '++',
+    'Blankets': '---',
+    'Sleds': '--',
+    'Sculptures': '++',
+    'PS6': '+++',
+    'Serum': '----',
+    'Lamps': '+',
+    'Chocolate': '-'
+}
+
+sentiment_multipliers = {
+    '+': 0.05,
+    '++': 0.15,
+    '+++': 0.25,
+    '-': -0.05,
+    '--': -0.1,
+    '---': -0.4,
     '----': -0.6
 }
 
@@ -103,5 +131,5 @@ for product in products:
         # Test all percentages from -100% to 100% with up to 2 decimal places 
         pi_i += 0.01
 
-#print_format_one(products, optimal_profits)
-print_format_two(products, optimal_profits)
+#print_format_one(products, optimal_profits, initial_capital)
+print_format_two(products, optimal_profits, initial_capital)
