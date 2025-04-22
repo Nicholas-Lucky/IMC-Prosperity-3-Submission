@@ -10,11 +10,15 @@ class Product:
 
         # Sell order history
         self.sell_order_history = sell_order_history
-        self.sell_order_average = get_average(self.sell_order_history)
+        self.sell_order_average = 0
+        if len(self.sell_order_history) > 0:
+            self.sell_order_average = get_average(self.sell_order_history)
 
         # Buy order history
         self.buy_order_history = buy_order_history
-        self.buy_order_average = get_average(self.buy_order_history)
+        self.buy_order_average = 0
+        if len(self.buy_order_history) > 0:
+            self.buy_order_average = get_average(self.buy_order_history)
 
         # Mid Price
         self.average_mid_price = (self.sell_order_average + self.sell_order_average) / 2
@@ -61,6 +65,17 @@ class Product:
     
     def set_acceptable_sell_price(self, new_price):
         self.acceptable_sell_price = new_price + self.current_offset
+    
+    def get_recent_mid_price(self, recent):
+        recent_sell_order_average = self.sell_order_average
+        recent_buy_order_average = self.buy_order_average
+
+        if len(self.sell_order_history) > recent:
+            recent_sell_order_average = get_average(self.buy_order_history[-recent:])
+        if len(self.buy_order_history) > recent:
+            recent_buy_order_average = get_average(self.buy_order_history[-recent:])
+        
+        return (recent_sell_order_average + recent_buy_order_average) / 2
 
 class Macaron(Product):
     def __init__(self, name, sell_order_history, buy_order_history, current_position, observation_info_history, current_observation_info):
@@ -69,7 +84,7 @@ class Macaron(Product):
 
         self.sell_order_history = sell_order_history
         self.buy_order_history = buy_order_history
-        
+
         self.sell_order_average = 0
         if len(sell_order_history) > 0:
             self.sell_order_average = mean(sell_order_history)
@@ -111,7 +126,6 @@ class Macaron(Product):
         self.historical_transport_fees_mean = 0
         if len(observation_info_history["transportFees"]) > 0:
             self.historical_transport_fees_mean = mean(observation_info_history["transportFees"])
-
 
         self.historical_ask_price_std = 0
         if len(observation_info_history["askPrice"]) > 0:
@@ -225,7 +239,7 @@ def initialize_product_information(products, sell_order_history, buy_order_histo
         product_info[product] = Product(product, sell_order_history[product], buy_order_history[product], current_positions[product])
     
     # Set picnic basket buy and sell thresholds
-    croissants = product_info["CROISSANTS"].average_mid_price * 6
+    """ croissants = product_info["CROISSANTS"].average_mid_price * 6
     jams = product_info["JAMS"].average_mid_price * 3
     djembe = product_info["DJEMBES"].average_mid_price
     product_info["PICNIC_BASKET1"].set_acceptable_buy_price(croissants + jams + djembe)
@@ -233,6 +247,17 @@ def initialize_product_information(products, sell_order_history, buy_order_histo
 
     croissants = product_info["CROISSANTS"].average_mid_price * 4
     jams = product_info["JAMS"].average_mid_price * 2
+    product_info["PICNIC_BASKET2"].set_acceptable_buy_price(croissants + jams)
+    product_info["PICNIC_BASKET2"].set_acceptable_sell_price(croissants + jams) """
+
+    croissants = product_info["CROISSANTS"].get_recent_mid_price(10) * 6
+    jams = product_info["JAMS"].get_recent_mid_price(10) * 3
+    djembe = product_info["DJEMBES"].get_recent_mid_price(10)
+    product_info["PICNIC_BASKET1"].set_acceptable_buy_price(croissants + jams + djembe)
+    product_info["PICNIC_BASKET1"].set_acceptable_sell_price(croissants + jams + djembe)
+
+    croissants = product_info["CROISSANTS"].get_recent_mid_price(10) * 4
+    jams = product_info["JAMS"].get_recent_mid_price(10) * 2
     product_info["PICNIC_BASKET2"].set_acceptable_buy_price(croissants + jams)
     product_info["PICNIC_BASKET2"].set_acceptable_sell_price(croissants + jams)
 
@@ -249,11 +274,11 @@ def initialize_product_information(products, sell_order_history, buy_order_histo
     product_info["DJEMBES"].set_buy_price_offset(-4)
     product_info["JAMS"].set_buy_price_offset(-4)
 
-    product_info["PICNIC_BASKET1"].set_buy_price_offset(-5)
-    product_info["PICNIC_BASKET1"].set_sell_price_offset(product_info["PICNIC_BASKET1"].default_offset)
+    #product_info["PICNIC_BASKET1"].set_buy_price_offset(-5)
+    #product_info["PICNIC_BASKET1"].set_sell_price_offset(product_info["PICNIC_BASKET1"].default_offset)
 
-    product_info["PICNIC_BASKET2"].set_buy_price_offset(-5)
-    product_info["PICNIC_BASKET2"].set_sell_price_offset(product_info["PICNIC_BASKET2"].default_offset)
+    #product_info["PICNIC_BASKET2"].set_buy_price_offset(-5)
+    #product_info["PICNIC_BASKET2"].set_sell_price_offset(product_info["PICNIC_BASKET2"].default_offset)
 
     # Return the products' information
     return product_info
@@ -403,19 +428,31 @@ def sell_to_bot(orders, current_position, position_limit, product, best_bid, bes
     if current_position - best_bid_amount >= (-1 * position_limit):
         orders.append(Order(product, best_bid, -1 * best_bid_amount))
 
-def big_dip_checker(order_history, current_order, multiplier):
-    historical_average = get_average(order_history) 
-    return current_order > (historical_average * multiplier)
+def big_dip_checker(sell_order_history, buy_order_history, current_mid_price, multiplier):
+    sell_average = get_average(sell_order_history)
+    buy_average = get_average(buy_order_history)
+    mid_average_value = (sell_average + buy_average) / 2
 
-def small_dip_checker(order_history, recents_length, current_order, multiplier):
-    recents = order_history
-    if len(recents) > recents_length:
-        recents = recents[0:recents_length]
+    return current_mid_price > (mid_average_value * multiplier)
+
+def small_dip_checker(sell_order_history, buy_order_history, recents_length, current_mid_price, multiplier):
+    sell_recents = sell_order_history
+    if len(sell_recents) > recents_length:
+        sell_recents = sell_recents[0:recents_length]
     
-    recents_average = get_average(recents) 
+    sell_recents_average = get_average(sell_recents)
+    
+    buy_recents = buy_order_history
+    if len(buy_recents) > recents_length:
+        buy_recents = buy_recents[0:recents_length]
+    
+    buy_recents_average = get_average(buy_recents)
+
+    mid_recents_average = (sell_recents_average + buy_recents_average) / 2
+
     #print(f"recents_average: {recents_average}")
 
-    return current_order > (recents_average * multiplier)
+    return current_mid_price > (mid_recents_average * multiplier)
 
 def update_sell_order_history(history, product, new_addition):
     max_history_length = 150
@@ -541,16 +578,18 @@ class Trader:
 
             # Make conditions (for a crash or not) in which we would want to sell everything
             best_ask, best_ask_amount = get_lowest_sell_order(list(order_depth.sell_orders.items()))
+            best_bid, best_bid_amount = get_highest_buy_order(list(order_depth.buy_orders.items()))
+            mid_price = (best_ask + best_bid) / 2
 
             # Condition 1: Sell order is a too high above the historical average (big-dip checker)
             # Condition 2: Sell order is a slightly higher than a recent average (small-dip checker)
             # Condition 3: Sell order of PICNIC_BASKET1 and PICNIC_BASKET2 is a slightly higher than a recent average (small-dip checker)
             # Condition 4: Sell order of DJEMBES is a slightly higher than a recent average (small-dip checker)
             # Either needs to be true for us to sell everything
-            condition_one = big_dip_checker(products[product].sell_order_history, best_ask, 1.08)
-            condition_two = small_dip_checker(products[product].sell_order_history, 20, best_ask, 1.04)
-            condition_three = small_dip_checker(products[product].sell_order_history, 10, best_ask, 1.08) and (product in ["PICNIC_BASKET1", "PICNIC_BASKET2"])
-            condition_four = small_dip_checker(products[product].sell_order_history, 40, best_ask, 1.08) and (product == "DJEMBES")
+            condition_one = big_dip_checker(products[product].sell_order_history, products[product].buy_order_history, mid_price, 1.10)
+            condition_two = small_dip_checker(products[product].sell_order_history, products[product].buy_order_history, 20, mid_price, 1.07)
+            condition_three = small_dip_checker(products[product].sell_order_history, products[product].buy_order_history, 10, mid_price, 1.10) and (product in ["PICNIC_BASKET1", "PICNIC_BASKET2"])
+            condition_four = small_dip_checker(products[product].sell_order_history, products[product].buy_order_history, 40, mid_price, 1.10) and (product == "DJEMBES")
 
             if (condition_one or condition_two or condition_three or condition_four):
                 print("I'M GOING TO CRASH OUT !!!")
@@ -588,10 +627,6 @@ class Trader:
                 #print(f"Sell orders: {list(order_depth.sell_orders.items())}")
 
                 # Add the lowest sell order to sell_order_history
-                # Default: Keep the past 150 orders
-                """ if len(sell_order_history[product]) > 150:
-                    sell_order_history[product].pop(0)
-                sell_order_history[product].append(best_ask) """
                 update_sell_order_history(sell_order_history, product, best_ask)
 
                 # or best_ask < (sell_order_history[product][-5] * 0.92)
