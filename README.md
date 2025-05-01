@@ -1,4 +1,7 @@
 # IMC-Prosperity-3-Submission
+a
+
+
 | Round         | Overall Rank           | Algorithm Rank  | Manual Trading Rank  |
 |:-------------:|:----------------------:|:-----:|:-----:|
 | col 3 is      | right-aligned | $1600 |$1600 |
