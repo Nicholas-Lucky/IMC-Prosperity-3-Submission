@@ -1,6 +1,6 @@
 # IMC-Prosperity-3-Submission
 
-<table align="center">
+<table>
     <tr>
         <th></th>
         <th colspan="3">Rank</th>
@@ -11,7 +11,7 @@
         <th>Algorithm Rank</th>
         <th>Manual Trading Rank</th>
     </tr>
-    <tr>
+    <tr align="center">
         <td>col 3 is</td>
         <td>right-aligned</td>
         <td>$1600</td>
