@@ -11,7 +11,7 @@
 <table>
     <tr align="center">
         <th></th>
-        <th colspan="3">Rank</th>
+        <th colspan="4">Rank</th>
     </tr>
     <tr align="center">
         <th>Round</th>
