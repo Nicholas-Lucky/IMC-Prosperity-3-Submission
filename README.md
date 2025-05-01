@@ -14,7 +14,7 @@
     <tr>
         <td>col 3 is</td>
         <td>right-aligned</td>
-        <td>$1600</td>
+        <td style="text-align: center;">$1600</td>
         <td>$1600</td>
     </tr>
     <tr>
