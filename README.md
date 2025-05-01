@@ -12,21 +12,21 @@
         <th>Manual Trading Rank</th>
     </tr>
     <tr>
-        <td style="text-align: center;">col 3 is</td>
-        <td style="text-align: center;">right-aligned</td>
-        <td style="text-align: center;">$1600</td>
-        <td style="text-align: center;">$1600</td>
+        <td><center>col 3 is</center></td>
+        <td><center>right-aligned</center></td>
+        <td><center>$1600</center></td>
+        <td><center>$1600</center></td>
     </tr>
     <tr>
-        <td style="text-align: center;">col 2 is</td>
-        <td style="text-align: center;">centered</td>
-        <td style="text-align: center;">$12</td>
-        <td style="text-align: center;">$12</td>
+        <td>col 2 is</td>
+        <td>centered</td>
+        <td>$12</td>
+        <td>$12</td>
     </tr>
     <tr>
-        <td style="text-align: center;">zebra stripes</td>
-        <td style="text-align: center;">are neat</td>
-        <td style="text-align: center;">$1</td>
-        <td style="text-align: center;">$1</td>
+        <td>zebra stripes</td>
+        <td>are neat</td>
+        <td>$1</td>
+        <td>$1</td>
     </tr>
 </table>
