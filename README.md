@@ -14,37 +14,37 @@
     </tr>
     <tr align="center">
         <td>Round 1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
+        <td>1022</td>
+        <td>715</td>
+        <td>1121</td>
+        <td>293</td>
     </tr>
     <tr align="center">
         <td>Round 2</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
+        <td>2971</td>
+        <td>1508</td>
+        <td>2764</td>
+        <td>815</td>
     </tr>
     <tr align="center">
         <td>Round 3</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
+        <td>4036</td>
+        <td>1298</td>
+        <td>2907</td>
+        <td>1013</td>
     </tr>
     <tr align="center">
         <td>Round 4</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
+        <td>3537</td>
+        <td>Didn't Record</td>
+        <td>Didn't Record</td>
+        <td>Didn't Record</td>
     </tr>
     <tr align="center">
         <td>Round 5</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
+        <td>1330</td>
+        <td>92</td>
+        <td>2875</td>
+        <td>369</td>
     </tr>
 </table>
