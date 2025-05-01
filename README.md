@@ -31,3 +31,7 @@
     </tr>
 </table>
 
+<style>
+    table {text-align: center;}
+</style>
+
