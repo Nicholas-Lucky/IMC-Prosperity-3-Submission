@@ -1,9 +1,9 @@
 # IMC-Prosperity-3-Submission
 ### Note: This writeup is heavily inspired by the [Alpha Animals](https://github.com/CarterT27/imc-prosperity-3) and [Byeongguk Kang, Minwoo Kim, and Uihyung Lee](https://github.com/pe049395/IMC-Prosperity-2024)'s writeups.
 ---
-Team Name: Salty Seagulls
+### Team Name: Salty Seagulls
 
-Team Members: Tyler Thomas, Lismarys Cabrales, Nicholas Lucky
+### Team Members: Tyler Thomas, Lismarys Cabrales, Nicholas Lucky
 
 <table>
     <tr align="center">
