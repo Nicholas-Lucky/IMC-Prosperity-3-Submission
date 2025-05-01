@@ -1,11 +1,11 @@
 # IMC-Prosperity-3-Submission
 
 <table>
-    <tr>
+    <tr align="center">
         <th></th>
         <th colspan="3">Rank</th>
     </tr>
-    <tr>
+    <tr align="center">
         <th>Round</th>
         <th>Overall Rank</th>
         <th>Algorithm Rank</th>
@@ -17,13 +17,13 @@
         <td>$1600</td>
         <td>$1600</td>
     </tr>
-    <tr>
-        <td align="center">col 2 is</td>
-        <td align="center">centered</td>
-        <td align="center">$12</td>
-        <td align="center">$12</td>
+    <tr align="center">
+        <td>col 2 is</td>
+        <td>centered</td>
+        <td>$12</td>
+        <td>$12</td>
     </tr>
-    <tr>
+    <tr align="center">
         <td>zebra stripes</td>
         <td>are neat</td>
         <td>$1</td>
