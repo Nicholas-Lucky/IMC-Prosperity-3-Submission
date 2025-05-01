@@ -1,6 +1,6 @@
 # IMC-Prosperity-3-Submission
 
-<table style="text-align: center;">
+<table>
     <tr>
         <th></th>
         <th colspan="3">Rank</th>
