@@ -7,26 +7,44 @@
     </tr>
     <tr align="center">
         <th>Round</th>
-        <th>Overall Rank</th>
-        <th>Algorithm Rank</th>
-        <th>Manual Trading Rank</th>
+        <th>Overall</th>
+        <th>Manual</th>
+        <th>Algorithmic</th>
+        <th>Country</th>
     </tr>
     <tr align="center">
-        <td>col 3 is</td>
+        <td>Round 1</td>
         <td>right-aligned</td>
         <td>$1600</td>
         <td>$1600</td>
+        <td>$1600</td>
     </tr>
     <tr align="center">
-        <td>col 2 is</td>
+        <td>Round 2</td>
         <td>centered</td>
         <td>$12</td>
         <td>$12</td>
+        <td>$1600</td>
     </tr>
     <tr align="center">
-        <td>zebra stripes</td>
+        <td>Round 3</td>
         <td>are neat</td>
         <td>$1</td>
         <td>$1</td>
+        <td>$1600</td>
+    </tr>
+    <tr align="center">
+        <td>Round 4</td>
+        <td>are neat</td>
+        <td>$1</td>
+        <td>$1</td>
+        <td>$1600</td>
+    </tr>
+    <tr align="center">
+        <td>Round 5</td>
+        <td>are neat</td>
+        <td>$1</td>
+        <td>$1</td>
+        <td>$1600</td>
     </tr>
 </table>
