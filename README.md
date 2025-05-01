@@ -5,7 +5,7 @@
         <th></th>
         <th colspan="3">Rank</th>
     </tr>
-    <tr>
+    <tr style="text-align: center;">
         <th>Round</th>
         <th>Overall Rank</th>
         <th>Algorithm Rank</th>
