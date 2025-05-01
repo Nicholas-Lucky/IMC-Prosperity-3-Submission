@@ -14,37 +14,37 @@
     </tr>
     <tr align="center">
         <td>Round 1</td>
-        <td>right-aligned</td>
-        <td>$1600</td>
-        <td>$1600</td>
-        <td>$1600</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
     </tr>
     <tr align="center">
         <td>Round 2</td>
-        <td>centered</td>
-        <td>$12</td>
-        <td>$12</td>
-        <td>$1600</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
     </tr>
     <tr align="center">
         <td>Round 3</td>
-        <td>are neat</td>
-        <td>$1</td>
-        <td>$1</td>
-        <td>$1600</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
     </tr>
     <tr align="center">
         <td>Round 4</td>
-        <td>are neat</td>
-        <td>$1</td>
-        <td>$1</td>
-        <td>$1600</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
     </tr>
     <tr align="center">
         <td>Round 5</td>
-        <td>are neat</td>
-        <td>$1</td>
-        <td>$1</td>
-        <td>$1600</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
     </tr>
 </table>
