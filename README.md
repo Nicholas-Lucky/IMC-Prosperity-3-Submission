@@ -9,14 +9,24 @@
 3. Nicholas Lucky ([LinkedIn](https://www.linkedin.com/in/nicholas-lucky/), [GitHub](https://github.com/Nicholas-Lucky))
 ---
 ## Round 1
+### Algorithmic Trading
+### Manual Trading
 ---
 ## Round 2
+### Algorithmic Trading
+### Manual Trading
 ---
 ## Round 3
+### Algorithmic Trading
+### Manual Trading
 ---
 ## Round 4
+### Algorithmic Trading
+### Manual Trading
 ---
 ## Round 5
+### Algorithmic Trading
+### Manual Trading
 ---
 <table>
     <tr align="center">
