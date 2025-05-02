@@ -8,6 +8,16 @@
 2. Lismarys Cabrales ([LinkedIn](https://www.linkedin.com/in/lismaryscabrales/), [GitHub](https://github.com/ikozmicx))
 3. Nicholas Lucky ([LinkedIn](https://www.linkedin.com/in/nicholas-lucky/), [GitHub](https://github.com/Nicholas-Lucky))
 ---
+## Round 1
+---
+## Round 2
+---
+## Round 3
+---
+## Round 4
+---
+## Round 5
+---
 <table>
     <tr align="center">
         <th></th>
