@@ -15,25 +15,60 @@
 ---
 ## Round 1
 ### Algorithmic Trading
+#### Info on algo round
+
+#### Info on what we did
+
 ### Manual Trading
+#### Info on manual round
+
+#### Info on what we did
 ---
 ## Round 2
 ### Algorithmic Trading
+#### Info on algo round
+
+#### Info on what we did
+
 ### Manual Trading
+#### Info on manual round
+
+#### Info on what we did
 ---
 ## Round 3
 ### Algorithmic Trading
+#### Info on algo round
+
+#### Info on what we did
+
 ### Manual Trading
+#### Info on manual round
+
+#### Info on what we did
 ---
 ## Round 4
 ### Algorithmic Trading
+#### Info on algo round
+
+#### Info on what we did
+
 ### Manual Trading
+#### Info on manual round
+
+#### Info on what we did
 ---
 ## Round 5
 ### Algorithmic Trading
+#### Info on algo round
+
+#### Info on what we did
+
 ### Manual Trading
+#### Info on manual round
+
+#### Info on what we did
 ---
-## Round Rankings
+## Results and Rankings
 <table>
     <tr align="center">
         <th></th>
