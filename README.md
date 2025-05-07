@@ -57,6 +57,8 @@ if product == "KELP":
 3. Quickly falling sell orders should also raise our threshold to sell, as we would not want to sell `SQUID_INK` at these prices
 
 ```python
+# In round_1.py
+
 # In hindsight, index_one and index_two probably should've been switched, but it still be fine given the absolute value 
 index_one = 0
 index_two = 99
@@ -149,6 +151,8 @@ elif product == "KELP":
 #### We used a similar strategy for the `CROISSANTS`, `JAMS`, and `DJEMBES`, using the average of the `sell_order_history` for our buy and sell offsets alongside some offsets to ideally allow buying at lower prices and selling at higher prices. For the thresholds to sell, we used the same adaptable offset calculations that were used for `SQUID_INK`.
 
 ```python
+# In round_2.py
+
 if product == "CROISSANTS":
     acceptable_buy_price = get_average(sell_order_history[product]) - 4
     acceptable_sell_price = get_average(sell_order_history[product]) + sell_offset
@@ -165,6 +169,8 @@ if product == "JAMS":
 #### We also used a similar strategy for `PICNIC_BASKET1` and `PICNIC_BASKET2`, however, instead of using the `sell_order_history` of `PICNIC_BASKET1` and `PICNIC_BASKET2`, we broke the baskets down into the individual products they contained. The thresholds for `PICNIC_BASKET1` would be calculated by summing the `sell_order_history` average of `CROISSANTS` multiplied by 6, the `sell_order_history` average of `JAMS` multiplied by 3, and the `sell_order_history` average of `DJEMBES`. The thresholds for `PICNIC_BASKET2` would be calculated by summing the `sell_order_history` average of `CROISSANTS` multiplied by 4 and the `sell_order_history` average of `JAMS` multiplied by 2.
 
 ```python
+# In round_2.py
+
 if product == "PICNIC_BASKET1":
     croissants = (get_average(sell_order_history["CROISSANTS"])) * 6
     jams = (get_average(sell_order_history["JAMS"])) * 3
@@ -179,6 +185,54 @@ if product == "PICNIC_BASKET2":
 
     acceptable_buy_price = croissants + jams - 5
     acceptable_sell_price = acceptable_buy_price + sell_offset
+```
+
+#### We also attempted to add "crash detectors" that can be used to warn the algorithm of an incoming crash. We discussed two possible "crash detectors" to implement:
+1. If incoming prices for a product are significantly higher than the historical average, be ready to sell everything we have for that product
+2. If incoming prices for a product are significantly lower than prices some number of iterations ago (for example, 5 iterations ago), be ready to sell everything we have for that product
+
+#### We decided that our "crash detectors" should follow the first implementation (point 1), as, while recognizing the possibility of missing the potential upsides of continuously rising trends, it would be ideal for our algorithm to be proactive rather than reactive. As a result, we added four conditions to compare incoming prices and, in the event of one of these conditions being true, signal the algorithm to sell all it currently has for a given product.
+
+```python
+# In round_2.py
+
+# Condition 1: Sell order is slightly higher than a recent average (small-dip checker)
+# Condition 2: Sell order is too high above the historical average (big-dip checker)
+# Condition 3: Sell order of PICNIC_BASKET1 and PICNIC_BASKET2 is slightly higher than a recent average (small-dip checker)
+# Condition 4: Sell order of DJEMBES is slightly higher than a recent average (small-dip checker)
+# Condition 5 (not used): Sell order is too low vs 5 sell orders ago
+
+# ...later in the code...
+if ((condition_one or condition_two or condition_three or condition_four or condition_five) and (sell_order_history.get(product) is not None)):
+    # Sell everything for that product
+```
+
+#### We also attempted to work with the current positions and position limits of the products, however, due to time constraints, we were not able to implement relevant functionality that we found meaningful. We were able to begin implementation to track current positions for our products.
+
+```python
+# In round_2.py
+
+current_positions = {}
+
+if state.traderData != "":
+    order_histories = convert_trading_data(state.traderData)
+    # ...
+    current_positions = order_histories[2]
+
+# ...
+
+position = 0
+    if current_positions.get(product) is not None:
+        position = current_positions[product]
+    else:
+        current_positions[product] = 0
+
+# ...
+
+if int(best_bid) > acceptable_sell_price:
+    # Sell some of the product
+    # ...
+    position -= best_bid_amount
 ```
 
 ### Manual Trading
