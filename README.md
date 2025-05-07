@@ -41,7 +41,7 @@ newData.append(buy_order_history)
 traderData = str(newData)
 ```
 
-#### In subsequent iterations, we took the average of the sell orders in `sell_order_history` for each product, and used this average as our threshold for buying and selling; we also attempted to add slight offsets for the buy/sell thresholds for some products, which we hoped would allow us to sell a product at a higher price than what we bought the product for. For round 1, we actually ended up not using `buy_order_history` for calculating thresholds for `SQUID_INK`, I think because of time constraints.
+#### In subsequent iterations, we took the average of the sell orders in `sell_order_history` for each product, and used this average as our threshold for buying and selling. For round 1, we actually ended up not using `buy_order_history` for calculating thresholds for `SQUID_INK`, I think because of time constraints.
 
 ```python
 # In round_1.py
@@ -51,7 +51,29 @@ if product == "KELP":
     acceptable_sell_price = get_average(sell_order_history[product]) + 3
 ```
 
-#### For the first iteration of the `Trader` class, we hardcoded thresholds for all three products. We originally wanted these hardcoded values to only be used in the first iteration, however we found that they provided us with more profit when used in future iterations as well. As a result, assuming that the historical data given would reflect on the final submission data (which we later learned is not the case), we ended up sticking with these hardcoded values for many of our thresholds. 
+#### We also attempted to add slight offsets for the buy/sell thresholds for some products, which we hoped would allow us to sell a product at a higher price than what we bought the product for. While most of these offsets were hardcoded based on rough estimates for how volatile each product would be, we added an adaptable offset for `SQUID_INK`, as we felt that such an offset would benefit `SQUID_INK` the most due to the product's high volatility. This adaptable offset was calculated by subtracting the 100th most recent sell order from the most recent sell order, dividing the difference by 6, and taking the absolute value. This result was then added to the threshold to sell, with the idea being that:
+1. Quickly rising sell orders should raise our threshold to sell, potentially allowing us to sell `SQUID_INK` at higher prices
+2. Stagnating sell orders should maintain our threshold to sell as it is
+3. Quickly falling sell orders should also raise our threshold to sell, as we would not want to sell `SQUID_INK` at these prices
+
+```python
+# In hindsight, index_one and index_two probably should've been switched, but it still be fine given the absolute value 
+index_one = 0
+index_two = 99
+if len(sell_order_history[product]) < 100:
+    index_two = len(sell_order_history[product]) - 1
+
+sell_offset = (sell_order_history[product][index_one] - sell_order_history[product][index_two]) / 6
+if sell_offset < 0:
+    sell_offset *= -1
+
+# ...later in the code...
+if product == "SQUID_INK":
+    # ...
+    acceptable_sell_price = sell_order_ave + sell_offset
+```
+
+#### For the first iteration of the `Trader` class, we hardcoded many of the thresholds for all three products. We originally wanted these hardcoded values to only be used in the first iteration, however we found that they provided us with more profit when used in future iterations as well. As a result, assuming that the historical data given would reflect on the final submission data (which we later learned is not the case), we ended up sticking with these hardcoded values for many of our thresholds.
 
 ```python
 # In round_1.py
@@ -78,6 +100,8 @@ elif product == "KELP":
 
 ![alt text](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_1_algorithm_results_1.gif)
 ![alt text](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_1_algorithm_results_2.gif)
+
+#### While we did gain profit from our algorithm, we recognized that some of our buy and sell thresholds were still hardcoded for some of the products. As a result, we attempted to make our thresholds and algorithms more adaptable in future rounds.
 
 ### Manual Trading
 #### Info on manual round
