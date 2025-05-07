@@ -74,6 +74,11 @@ elif product == "KELP":
 #acceptable_sell_price = get_average(sell_order_history[product]) + 1
 ```
 
+#### These are the results of our Round 1 algorithm:
+
+![alt text](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_1_algorithm_results_1.gif)
+![alt text](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_1_algorithm_results_2.gif)
+
 ### Manual Trading
 #### Info on manual round
 
