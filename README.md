@@ -17,7 +17,62 @@
 ### Algorithmic Trading
 #### Round 1 introduced us to our first three tradable products: `RAINFOREST_RESIN`, `KELP`, and `SQUID_INK`. These products seem to have varying levels of stability, with `RAINFOREST_RESIN` having relatively stable values, `KELP` having some variation, and `SQUID_INK` having the most volatility of the three products. `RAINFOREST_RESIN` has a position limit of `50`, `KELP` has a position limit of `50`, and `SQUID_INK` has a position limit of `50`.
 
-#### Info on what we did
+#### We began with the [IMC_prototype.py](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/IMC_prototype.py) provided to us by Mark Brezina in the IMC Prosperity Discrod server. After learning the logic of the code, we experimented with different thresholds to buy and sell the tradable products. Realizing that our code needed to be adaptable, we attempted to store and track the sell orders that we encountered in a `sell_order_history` dictionary. We also created a `buy_order_history` dictionary to use alongside `sell_order_history` when calculating buy and sell thresholds for `SQUID_INK`, as suggested by Tyler Thomas. For `sell_order_history`, we would append the lowest sell order of the iteration, while we would append the highest buy order of the iteration to `buy_order_history`. These dictionaries could then be converted into strings to be put in `traderData` and converted back to dictionaries at the start of future iterations.
+
+```python
+# In round_1.py
+
+# At the start of the Trader class
+sell_order_history = {}
+buy_order_history = {}
+
+if state.traderData != "":
+    order_histories = string_to_list_of_dictionaries(state.traderData)
+    sell_order_history = order_histories[0]
+    buy_order_history = order_histories[1]
+
+# ...perform calculations
+
+# At the end of the Trader class
+newData = []
+newData.append(sell_order_history)
+newData.append(buy_order_history)
+
+traderData = str(newData)
+```
+
+#### In subsequent iterations, we took the average of the sell orders in `sell_order_history` for each product, and used this average as our threshold for buying and selling; we also attempted to add slight offsets for the buy/sell thresholds for some products, which we hoped would allow us to sell a product at a higher price than what we bought the product for. For round 1, we actually ended up not using `buy_order_history` for calculating thresholds for `SQUID_INK`, I think because of time constraints.
+
+```python
+# In round_1.py
+
+if product == "KELP":
+    #acceptable_buy_price = get_average(sell_order_history[product])
+    acceptable_sell_price = get_average(sell_order_history[product]) + 3
+```
+
+#### For the first iteration of the `Trader` class, we hardcoded thresholds for all three products. We originally wanted these hardcoded values to only be used in the first iteration, however we found that they provided us with more profit when used in future iterations as well. As a result, assuming that the historical data given would reflect on the final submission data (which we later learned is not the case), we ended up sticking with these hardcoded values for many of our thresholds. 
+
+```python
+# In round_1.py
+
+# "RAINFOREST_RESIN" price, hardcoded for now
+acceptable_buy_price = 9999  # Participant should calculate this value
+acceptable_sell_price = 10001  # Participant should calculate this value
+
+if product == "SQUID_INK":
+    acceptable_buy_price = 1950
+    acceptable_sell_price = 1970
+
+elif product == "KELP":
+    acceptable_buy_price = 2030
+    acceptable_sell_price = 2032
+
+# ...later in the code; we commented out the lines for calculating thresholds
+#if product == "RAINFOREST_RESIN":
+#acceptable_buy_price = get_average(sell_order_history[product]) - 2
+#acceptable_sell_price = get_average(sell_order_history[product]) + 1
+```
 
 ### Manual Trading
 #### Info on manual round
