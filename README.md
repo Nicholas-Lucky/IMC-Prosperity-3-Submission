@@ -1,5 +1,5 @@
 # IMC Prosperity 3 (2025) Submission
-### Note: This writeup is heavily inspired by the [Alpha Animals](https://github.com/CarterT27/imc-prosperity-3) and [Byeongguk Kang, Minwoo Kim, and Uihyung Lee](https://github.com/pe049395/IMC-Prosperity-2024)'s writeups.
+### Note: This writeup is heavily inspired by the [Alpha Animals](https://github.com/CarterT27/imc-prosperity-3), [CMU Physics](https://github.com/chrispyroberts/imc-prosperity-3), and [Byeongguk Kang, Minwoo Kim, and Uihyung Lee](https://github.com/pe049395/IMC-Prosperity-2024)'s writeups.
 ---
 ### Team Name: Salty Seagulls
 
