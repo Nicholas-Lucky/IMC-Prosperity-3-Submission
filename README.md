@@ -9,13 +9,13 @@
 3. Nicholas Lucky ([LinkedIn](https://www.linkedin.com/in/nicholas-lucky/), [GitHub](https://github.com/Nicholas-Lucky))
 ---
 ## Overview
-#### [IMC's Prosperity 2025](https://prosperity.imc.com/) is an annual trading challenge that challenges participants to program an algorithm to trade various goods on a virtual trading market — with the goal of gaining as much profit, in the form of seashells, as possible. In addition to the algorithm, there are manual trading challenges that allow participants to gain additional seashells. The competition spans five rounds, with each round adding new products for our trading algorithms to consider, and a new manual trading challenge to attempt. This year is the third iteration of the competition (Prosperity 3), and lasted from April 7th, 2025 to April 22nd, 2025. This is our first year in the competition, and we focused on learning and gaining a (at least) general understanding of the competition and the programming and skills required to perform in both the trading algorithm and manual trading challenges.
+#### [IMC's Prosperity 2025](https://prosperity.imc.com/) is an annual trading challenge that challenges participants to program an algorithm to trade various goods on a virtual trading market — with the goal of gaining as much profit, in the form of SeaShells, as possible. In addition to the algorithm, there are manual trading challenges that allow participants to gain additional seashells. The competition spans five rounds, with each round adding new products for our trading algorithms to consider, and a new manual trading challenge to attempt. This year is the third iteration of the competition (Prosperity 3), and lasted from April 7th, 2025 to April 22nd, 2025. This is our first year in the competition, and we focused on learning and gaining a (at least) general understanding of the competition and the programming and skills required to perform in both the trading algorithm and manual trading challenges.
 
 #### Further details on this year's competition can be found on the [Prosperity 3 Wiki](https://imc-prosperity.notion.site/Prosperity-3-Wiki-19ee8453a09380529731c4e6fb697ea4).
 ---
 ## Round 1
 ### Algorithmic Trading
-#### Round 1 introduced us to our first three tradable products: `RAINFOREST_RESIN`, `KELP`, and `SQUID_INK`. These products seem to have varying levels of stability, with `RAINFOREST_RESIN` having relatively stable values, `KELP` having some variation, and `SQUID_INK` having the most volatility of the three products. `RAINFOREST_RESIN` has a position limit of `50`, `KELP` has a position limit of `50`, and `SQUID_INK` has a position limit of `50`.
+#### As mentioned in [Round 1 of the wiki](https://imc-prosperity.notion.site/Round-1-19ee8453a09381d18b78cf3c21e5d916), Round 1 introduced us to our first three tradable products: `RAINFOREST_RESIN`, `KELP`, and `SQUID_INK`. These products seem to have varying levels of stability, with `RAINFOREST_RESIN` having relatively stable values, `KELP` having some variation, and `SQUID_INK` having the most volatility of the three products. `RAINFOREST_RESIN` has a position limit of `50`, `KELP` has a position limit of `50`, and `SQUID_INK` has a position limit of `50`.
 
 #### We began with the [IMC_prototype.py](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/IMC_prototype.py) provided to us by Mark Brezina in the IMC Prosperity Discrod server. After learning the logic of the code, we experimented with different thresholds to buy and sell the tradable products. Realizing that our code needed to be adaptable, we attempted to store and track the sell orders that we encountered in a `sell_order_history` dictionary. We also created a `buy_order_history` dictionary to use alongside `sell_order_history` when calculating buy and sell thresholds for `SQUID_INK`, as suggested by Tyler Thomas. For `sell_order_history`, we would append the lowest sell order of the iteration, while we would append the highest buy order of the iteration to `buy_order_history`. These dictionaries could then be converted into strings to be put in `traderData` and converted back to dictionaries at the start of future iterations.
 
@@ -98,15 +98,42 @@ elif product == "KELP":
 
 #### These are the results of our Round 1 algorithm:
 
-![alt text](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_1_algorithm_results_1.gif)
-![alt text](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_1_algorithm_results_2.gif)
+![round_1_algorithm_results_1](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_1_algorithm_results_1.gif)
+![round_1_algorithm_results_2](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_1_algorithm_results_2.gif)
 
 #### While we did gain profit from our algorithm, we recognized that some of our buy and sell thresholds were still hardcoded for some of the products. As a result, we attempted to make our thresholds and algorithms more adaptable in future rounds.
 
 ### Manual Trading
-#### Info on manual round
+#### As mentioned in [Round 1 of the wiki](https://imc-prosperity.notion.site/Round-1-19ee8453a09381d18b78cf3c21e5d916), the manual trading challenge for Round 1 was a series of currency trades that we needed to. We began with 500,000 SeaShells, with SeaShells as our starting currency, and we needed to trade this initial amount to different currencies before ending with a trade back to SeaShells. We amount we get from trading to another currency is determined by the multiplier of the trade, as determined by:
 
-#### Info on what we did
+| Products/Currencies | Snowballs | Pizzas | Silicon Nuggets | SeaShells |
+|:-------------------:|:---------:|:------:|:---------------:|:---------:|
+| Snowballs           | 1         | 1.45   | 0.52            | 0.72      |
+| Pizzas              | 0.7       | 1      | 0.31            | 0.48      |
+| Silicon Nuggets     | 1.95      | 3.1    | 1               | 1.49      |
+| SeaShells           | 1.34      | 1.98   | 0.64            | 1         |
+
+#### ^^ For example, if we have 500,000 SeaShells and trade to Pizzas, we will receive 500,000 x 1.98 = 990,000 Pizzas
+
+#### Our goal is to perform 5 trades (with the 5th trade being back to SeaShells) that will ideally net us a profit in SeaShells — the general format is shown below. It is worth noting that we are allowed to trade a currency into the same currency (the resulting multiplier would be 1), and we are allowed to trade into a specific currency more than once.
+
+| Initial Currency | Currency to Trade to |
+|:----------------:|:--------------------:|
+| SeaShells        | product_1            |
+| product_1        | product_2            |
+| product_2        | product_3            |
+| product_3        | product_4            |
+| product_4        | SeaShells            |
+
+#### Our work for this round's manual trading can be viewed in [round_1_manual_trading.py](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/round_1/round_1_manual_trading.py). Assuming that the 5th trade will always be to SeaShells, we would essentially have 4 trades, each of which has 4 possible currencies to choose from. As a result, we assumed there would be a maximum of 4<sup>4</sup> = 256 possible "paths" for this challenge. Hence, we felt that it was possible to use brute force to determine the optimal series of trades that would yield the highest number of SeaShells. After fixing errors identified by Tyler Thomas, our round_1_manual_trading.py yielded the following path:
+
+![round_1_manual_code_output](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_1_manual_code_output.jpg)
+
+#### ^^ With a revenue of 544,340.16 SeaShells, and an initial amount of 500,000 SeaShells, our profit from this series of trades would be 544,340.16 - 500,000 = 44,340.16 SeaShells
+
+#### These are the results of our Round 1 manual trading challenge:
+
+
 ---
 ## Round 2
 ### Algorithmic Trading
