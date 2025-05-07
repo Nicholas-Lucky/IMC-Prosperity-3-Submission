@@ -146,7 +146,23 @@ elif product == "KELP":
 
 #### `CROISSANTS` has a position limit of `250`, `JAMS` has a position limit of `350`, `DJEMBES` has a position limit of `60`, `PICNIC_BASKET1` has a position limit of `60`, and `PICNIC_BASKET2` has a position limit of `100`.
 
-#### Info on what we did
+#### We used a similar strategy for the `CROISSANTS`, `JAMS`, and `DJEMBES`, using the average of the `sell_order_history` for our buy and sell offsets alongside some offsets to ideally allow buying at lower prices and selling at higher prices. For the thresholds to sell, we used the same adaptable offset calculations that were used for `SQUID_INK`.
+
+```python
+if product == "CROISSANTS":
+    acceptable_buy_price = get_average(sell_order_history[product]) - 4
+    acceptable_sell_price = get_average(sell_order_history[product]) + sell_offset
+
+if product == "DJEMBES":
+    acceptable_buy_price = get_average(sell_order_history[product]) - 4
+    acceptable_sell_price = get_average(sell_order_history[product]) + sell_offset
+
+if product == "JAMS":
+    acceptable_buy_price = get_average(sell_order_history[product]) - 4
+    acceptable_sell_price = get_average(sell_order_history[product]) + sell_offset
+```
+
+#### We also used a similar strategy for `PICNIC_BASKET1` and `PICNIC_BASKET2`, however, instead of using the `sell_order_history` of `PICNIC_BASKET1` and `PICNIC_BASKET2`, we instead broke the baskets down into the individual products they contained: the thresholds for `PICNIC_BASKET1` would be calculated by summing the `sell_order_history` average of `CROISSANTS` multiplied by 6, the `sell_order_history` average of `JAMS` multiplied by 3, and the `sell_order_history` average of `DJEMBES`.
 
 ### Manual Trading
 #### Info on manual round
