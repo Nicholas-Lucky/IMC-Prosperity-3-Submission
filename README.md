@@ -207,7 +207,7 @@ if ((condition_one or condition_two or condition_three or condition_four or cond
     # Sell everything for that product
 ```
 
-#### We also attempted to work with the current positions and position limits of the products, however, due to time constraints, we were not able to implement relevant functionality that we found meaningful. We were able to begin implementation to track current positions for our products.
+#### We also attempted to work with the current positions and position limits of the products, however, due to time constraints, we were not able to implement relevant functionality that we found meaningful. We were able to begin implementation to track current positions for our products, and store these values in `traderData` for future iterations.
 
 ```python
 # In round_2.py
@@ -233,6 +233,16 @@ if int(best_bid) > acceptable_sell_price:
     # Sell some of the product
     # ...
     position -= best_bid_amount
+
+# ...
+
+newData = []
+# ...
+newData.append(current_positions)
+
+# String value holding Trader state data required. 
+# It will be delivered as TradingState.traderData on next execution.
+traderData = str(newData)
 ```
 
 ### Manual Trading
