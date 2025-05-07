@@ -162,7 +162,24 @@ if product == "JAMS":
     acceptable_sell_price = get_average(sell_order_history[product]) + sell_offset
 ```
 
-#### We also used a similar strategy for `PICNIC_BASKET1` and `PICNIC_BASKET2`, however, instead of using the `sell_order_history` of `PICNIC_BASKET1` and `PICNIC_BASKET2`, we instead broke the baskets down into the individual products they contained: the thresholds for `PICNIC_BASKET1` would be calculated by summing the `sell_order_history` average of `CROISSANTS` multiplied by 6, the `sell_order_history` average of `JAMS` multiplied by 3, and the `sell_order_history` average of `DJEMBES`.
+#### We also used a similar strategy for `PICNIC_BASKET1` and `PICNIC_BASKET2`, however, instead of using the `sell_order_history` of `PICNIC_BASKET1` and `PICNIC_BASKET2`, we broke the baskets down into the individual products they contained. The thresholds for `PICNIC_BASKET1` would be calculated by summing the `sell_order_history` average of `CROISSANTS` multiplied by 6, the `sell_order_history` average of `JAMS` multiplied by 3, and the `sell_order_history` average of `DJEMBES`. The thresholds for `PICNIC_BASKET2` would be calculated by summing the `sell_order_history` average of `CROISSANTS` multiplied by 4 and the `sell_order_history` average of `JAMS` multiplied by 2.
+
+```python
+if product == "PICNIC_BASKET1":
+    croissants = (get_average(sell_order_history["CROISSANTS"])) * 6
+    jams = (get_average(sell_order_history["JAMS"])) * 3
+    djembe = get_average(sell_order_history["DJEMBES"])
+
+    acceptable_buy_price = croissants + jams + djembe - 5
+    acceptable_sell_price = acceptable_buy_price + sell_offset
+
+if product == "PICNIC_BASKET2":
+    croissants = (get_average(sell_order_history["CROISSANTS"])) * 4
+    jams = (get_average(sell_order_history["JAMS"])) * 2
+
+    acceptable_buy_price = croissants + jams - 5
+    acceptable_sell_price = acceptable_buy_price + sell_offset
+```
 
 ### Manual Trading
 #### Info on manual round
