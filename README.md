@@ -133,6 +133,11 @@ elif product == "KELP":
 
 #### These are the results of our Round 1 manual trading challenge:
 
+![round_1_manual_results_1](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_1_manual_results_1.gif)
+![round_1_manual_results_2](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_1_manual_results_2.jpg)
+![round_1_manual_results_3](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_1_manual_results_3.jpg)
+
+#### ^^ It seems that the number 1 team in Manual after Round 1, RBQ, also had a profit of 44,340 SeaShells, which supports the claim that we seemed to have submitted the optimal series of trades for Round 1's manual trading challenge.
 
 ---
 ## Round 2
