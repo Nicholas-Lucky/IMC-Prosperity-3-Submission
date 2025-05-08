@@ -276,7 +276,7 @@ if product == "KELP":
 
 | x80 Multiplier, 6 Inhabitants  | x37 Multiplier, 6 Inhabitants |                               |
 |:------------------------------:|:-----------------------------:|:-----------------------------:|
-| x10 Multiplier, 1 Inhabitant   | x31 Multiplier, 2 Inhabitants | x17 Multiplier, 1 Inhabitants |
+| x10 Multiplier, 1 Inhabitant   | x31 Multiplier, 2 Inhabitants | x17 Multiplier, 1 Inhabitant  |
 | x90 Multiplier, 10 Inhabitants | x50 Multiplier, 4 Inhabitants |                               |
 | x20 Multiplier, 2 Inhabitants  | x73 Multiplier, 4 Inhabitants | x89 Multiplier, 8 Inhabitants |
 
@@ -291,7 +291,7 @@ if product == "KELP":
 #### Given that the first crate is free to pick, we focused on the possibility of picking a second crate, which is riskier due to its initial 50,000 SeaShell fee. In order for a second crate to be profitable, the final amount of SeaShells it awards to us would need to have at least 50,000 to offset the initial fee. In other words:
 #### $\frac{10,000 * \text{Multiplier}}{\text{Inhabitants} + (\text{Participant Pick Percentage} * 100)}\ge50,000$
 
-#### Rearranging the equation we got:
+#### Rearranging the equation gives us:
 #### $10,000 * \frac{\text{Multiplier}}{\text{Inhabitants} + (\text{Participant Pick Percentage} * 100)}\ge50,000$
 #### $\frac{\text{Multiplier}}{\text{Inhabitants} + (\text{Participant Pick Percentage} * 100)}\ge\frac{50,000}{10,000}$
 #### $\frac{\text{Multiplier}}{\text{Inhabitants} + (\text{Participant Pick Percentage} * 100)}\ge5$
@@ -300,7 +300,14 @@ if product == "KELP":
 
 #### With all variables given to us except for the participant pick percentage, we can calculate the maximum participant pick percentage allowed for a crate to have a "final multiplier" of 5. Using [round_2_manual_trading.py](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/round_2/round_2_manual_trading.py), we found the following maximums for the crates:
 
+![round_2_manual_code_output](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_2_manual_code_output.jpg)
+#### ^^ It is worth noting that adding these percentages up yields 58.4%, meaning that it is highly likely that most, if not all, of these crates will not be profitable as a second choice, depending on how the other 41.6% of crate picks are distributed.
 
+#### After some discussion, we eventually decided to pick 2 crates, well aware of the risks of a second crate:
+1. x80 Multiplier, 6 Inhabitants
+2. x31 Multiplier, 2 Inhabitants
+
+#### We chose the (x80 Multiplier, 6 Inhabitants) crate because we assume more participants would choose the (x90 Multiplier, 10 Inhabitants), (x89 Multiplier, 8 Inhabitants), and (x73 Multiplier, 4 Inhabitants) crates. Hence, we hoped that the maximum participant pick percentage of 10% was feasible. We chose the (x31 Multiplier, 2 Inhabitants) crate because we wanted to pick a crate that had a lower multiplier, and we guessed that the (x10 Multiplier, 1 Inhabitant), (x20 Multiplier, 2 Inhabitants), (x17 Multiplier, 1 Inhabitant), (x37 Multiplier, 3 Inhabitants), and (x50 Multiplier, 4 Inhabitants) crates would have their maximum participant pick percentages exceeded.
 
 </details>
 
