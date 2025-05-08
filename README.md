@@ -245,6 +245,27 @@ newData.append(current_positions)
 traderData = str(newData)
 ```
 
+#### Regarding the previous products in Round 1, we attempted to make our algorithm more adaptable by uncommenting our `sell_order_history` averages, allowing the buy and sell thresholds of `RAINFOREST_RESIN`, `KELP`, and `SQUID_INK` to be mainly influenced by previous sell orders; we left hardcoded offsets for some of the thresholds, however. We hope that this change will allow our algorithm to perform in more scenarios than if we solely relied on hardcoded values, despite their performance in Round 1.
+
+```python
+# In round_2.py
+
+if product == "RAINFOREST_RESIN":
+    acceptable_buy_price = get_average(sell_order_history[product]) - 1   # Influenced by sell_order_history, -1 is still hardcoded
+    acceptable_sell_price = get_average(sell_order_history[product]) + 1  # Influenced by sell_order_history, -1 is still hardcoded
+
+if product == "KELP":
+    acceptable_buy_price = get_average(sell_order_history[product])       # Influenced by sell_order_history
+    acceptable_sell_price = get_average(sell_order_history[product]) + 3  # Influenced by sell_order_history, -3 is still hardcoded
+```
+
+#### These are the results of our Round 2 algorithm:
+
+![round_2_algorithm_results_1](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_2_algorithm_results_1.gif)
+![round_2_algorithm_results_2](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_2_algorithm_results_2.gif)
+
+#### ^^ Currently, we suspect a possible reason for this downward trend in profit could be due to faulty "crash detector" logic or implementation or both.
+
 ### Manual Trading
 #### Info on manual round
 
