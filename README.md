@@ -272,10 +272,21 @@ if product == "KELP":
 #### ^^ Currently, we suspect a possible reason for this downward trend in profit could be due to faulty "crash detector" logic or implementation or both.
 
 ### Manual Trading
-#### As mentioned in [Round 2 of the wiki](https://imc-prosperity.notion.site/Round-2-19ee8453a09381a580cdf9c0468e9bc8), the manual trading challenge for Round 2 presented 10 shipping containers, each of which contains a base amount of 10,000 SeaShells, a set multiplier, and some number of inhabitants — all of which will be used to calculate the final amount of SeaShells. The final amount of SeaShells awarded by a crate will also depend on the percentage of participants who choose the crate. The formula for the final amount of SeaShells awarded by the crate is as follows:
+#### As mentioned in [Round 2 of the wiki](https://imc-prosperity.notion.site/Round-2-19ee8453a09381a580cdf9c0468e9bc8), the manual trading challenge for Round 2 presented 10 shipping containers, each of which contains a base amount of 10,000 SeaShells, a set multiplier, and some number of inhabitants — all of which will be used to calculate the final amount of SeaShells. The final amount of SeaShells awarded by a crate will also depend on the percentage of participants who choose the crate. The 10 shipping containers are presented below, with each table element (except the empty elements) representing a crate:
 
+| x80 Multiplier, 6 Inhabitants  | x37 Multiplier, 6 Inhabitants |                               |
+|:------------------------------:|:-----------------------------:|:-----------------------------:|
+| x10 Multiplier, 1 Inhabitant   | x31 Multiplier, 2 Inhabitants | x17 Multiplier, 1 Inhabitants |
+| x90 Multiplier, 10 Inhabitants | x50 Multiplier, 4 Inhabitants |                               |
+| x20 Multiplier, 2 Inhabitants  | x73 Multiplier, 4 Inhabitants | x89 Multiplier, 8 Inhabitants |
 
-#### We get to pick up to 2 shipping containers to open, with the first container being free to pick, and the second container costing an initial fee of 50,000 SeaShells.
+#### The formula for the final amount of SeaShells awarded by the crate is as follows:
+#### $\text{Final Amount}=\frac{10,000 * \text{Multiplier}}{\text{Inhabitants} + (\text{Participant Pick Percentage} * 100)}$
+
+#### ^^ As an example, if we pick the crate on the top left of the table (x80 Multiplier, 6 Inhabitants). If, at the end of the round, we find that 5% of the participants picked this crate, the amount of SeaShells awarded to us from this crate would be:
+#### $\text{Final Amount}=\frac{10,000 * 80}{6 + (0.05 * 100)}=\frac{800,000}{6 + 5}=\frac{800,000}{11}\approx72727.2727\text{ SeaShells}$
+
+#### In this manual trading challenge, we may open up to 2 shipping containers, with the first container being free to pick, and the second container costing an initial fee of 50,000 SeaShells. Our goal is to award ourselves with the most number of SeaShells possible from these crates.
 
 #### Info on what we did
 </details>
