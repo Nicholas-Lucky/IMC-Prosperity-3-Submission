@@ -309,6 +309,12 @@ if product == "KELP":
 
 #### We chose the (x80 Multiplier, 6 Inhabitants) crate because we assume more participants would choose the (x90 Multiplier, 10 Inhabitants), (x89 Multiplier, 8 Inhabitants), and (x73 Multiplier, 4 Inhabitants) crates. Hence, we hoped that the maximum participant pick percentage of 10% was feasible. We chose the (x31 Multiplier, 2 Inhabitants) crate because we wanted to pick a crate that had a lower multiplier, and we guessed that the (x10 Multiplier, 1 Inhabitant), (x20 Multiplier, 2 Inhabitants), (x17 Multiplier, 1 Inhabitant), (x37 Multiplier, 3 Inhabitants), and (x50 Multiplier, 4 Inhabitants) crates would have their maximum participant pick percentages exceeded.
 
+#### These are the results of our Round 2 manual trading challenge:
+
+![round_2_manual_results_1](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_2_manual_results_1.gif)
+![round_2_manual_results_2](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_2_manual_results_2.jpg)
+![round_2_manual_results_3](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_2_manual_results_3.jpg)
+
 </details>
 
 ---
