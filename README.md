@@ -331,7 +331,50 @@ if product == "KELP":
 
 #### The position limit for `VOLCANIC_ROCK` is `400`, the position limit for `VOLCANIC_ROCK_VOUCHER_9500` is `200`, the position limit for `VOLCANIC_ROCK_VOUCHER_9750` is `200`, the position limit for `VOLCANIC_ROCK_VOUCHER_10000` is `200`, the position limit for `VOLCANIC_ROCK_VOUCHER_10250` is `200`, the position limit for `VOLCANIC_ROCK_VOUCHER_10500` is `200`.
 
-#### Info on what we did
+#### Tyler Thomas quickly pointed out that the vouchers to buy `VOLCANIC_ROCK` are similar to real-life options in trading. Due to inexperience and time constraints, we were not able to implement a meaningful strategy to trade the vouchers and `VOLCANIC_ROCK` as if they were options, at least to our knowledge. Instead, we traded the vouchers and `VOLCANIC_ROCK` as tradable products:
+
+``` python
+# In round_3.py
+
+if product == "VOLCANIC_ROCK":
+    acceptable_buy_price = get_average(sell_order_history[product]) - sell_offset
+    acceptable_sell_price = get_average(sell_order_history[product]) + sell_offset
+
+if product == "VOLCANIC_ROCK_VOUCHER_9500":
+    acceptable_buy_price = get_average(sell_order_history[product]) - sell_offset
+    acceptable_sell_price = get_average(sell_order_history[product]) + sell_offset
+
+if product == "VOLCANIC_ROCK_VOUCHER_9750":
+    acceptable_buy_price = get_average(sell_order_history[product]) - sell_offset
+    acceptable_sell_price = get_average(sell_order_history[product]) + sell_offset
+
+if product == "VOLCANIC_ROCK_VOUCHER_10000":
+    acceptable_buy_price = get_average(sell_order_history[product]) - sell_offset
+    acceptable_sell_price = get_average(sell_order_history[product]) + sell_offset
+
+if product == "VOLCANIC_ROCK_VOUCHER_10250":
+    acceptable_buy_price = get_average(sell_order_history[product]) - sell_offset
+    acceptable_sell_price = get_average(sell_order_history[product]) + sell_offset
+
+if product == "VOLCANIC_ROCK_VOUCHER_10500":
+    acceptable_buy_price = get_average(sell_order_history[product]) - sell_offset
+    acceptable_sell_price = get_average(sell_order_history[product]) + sell_offset
+```
+
+#### We also attempted to tweak the "crash detectors" to be less sensitive, as we suspected that the "crash detectors" may have signaled our algorithm to sell everything for a given product too frequently, especially at lower prices. In addition, we changed the `sell_offset` calculations to only include the most recent sell order and the 10th (previously 100th) most recent sell order.
+
+```python
+# In round_3.py
+
+index_one = 0
+index_two = 10
+if len(sell_order_history[product]) < (index_two + 1):
+    index_two = len(sell_order_history[product]) - 1
+
+sell_offset = (sell_order_history[product][index_one] - sell_order_history[product][index_two]) / 3
+if sell_offset < 0:
+    sell_offset *= -1
+```
 
 ### Manual Trading
 #### Info on manual round
