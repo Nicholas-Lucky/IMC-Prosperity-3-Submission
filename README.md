@@ -272,7 +272,7 @@ if product == "KELP":
 #### ^^ Currently, we suspect a possible reason for this downward trend in profit could be due to faulty "crash detector" logic or implementation or both.
 
 ### Manual Trading
-#### Info on manual round
+#### As mentioned in [Round 2 of the wiki](https://imc-prosperity.notion.site/Round-2-19ee8453a09381a580cdf9c0468e9bc8), the manual trading challenge for Round 2 presented 10 shipping containers, each of which contains a base amount of 10,000 SeaShells. We get to pick up to 2 shipping containers to open, with the first container being free to pick, and the second container costing an initial fee of 50,000 SeaShells. **continue later
 
 #### Info on what we did
 </details>
