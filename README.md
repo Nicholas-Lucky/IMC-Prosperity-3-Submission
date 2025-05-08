@@ -288,7 +288,20 @@ if product == "KELP":
 
 #### In this manual trading challenge, we may open up to 2 shipping containers, with the first container being free to pick, and the second container costing an initial fee of 50,000 SeaShells. Our goal is to award ourselves with the most number of SeaShells possible from these crates.
 
-#### Info on what we did
+#### Given that the first crate is free to pick, we focused on the possibility of picking a second crate, which is riskier due to its initial 50,000 SeaShell fee. In order for a second crate to be profitable, the final amount of SeaShells it awards to us would need to have at least 50,000 to offset the initial fee. In other words:
+#### $\frac{10,000 * \text{Multiplier}}{\text{Inhabitants} + (\text{Participant Pick Percentage} * 100)}\ge50,000$
+
+#### Rearranging the equation we got:
+#### $10,000 * \frac{\text{Multiplier}}{\text{Inhabitants} + (\text{Participant Pick Percentage} * 100)}\ge50,000$
+#### $\frac{\text{Multiplier}}{\text{Inhabitants} + (\text{Participant Pick Percentage} * 100)}\ge\frac{50,000}{10,000}$
+#### $\frac{\text{Multiplier}}{\text{Inhabitants} + (\text{Participant Pick Percentage} * 100)}\ge5$
+
+#### We interpreted this to mean that the initial multiplier of the crate will be divided by the sum of the number of inhabitants and the participant pick percentage. This quotient will be the "final multiplier" that multiplies with the crate's base amount of 10,000 SeaShells to get the final amount of SeaShells awarded. As a result, we would want the "final multiplier" of the second crate to be greater than or equal to 5 to offset the initial fee of 50,000 SeaShells.
+
+#### With all variables given to us except for the participant pick percentage, we can calculate the maximum participant pick percentage allowed for a crate to have a "final multiplier" of 5. Using [round_2_manual_trading.py](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/round_2/round_2_manual_trading.py), we found the following maximums for the crates:
+
+
+
 </details>
 
 ---
