@@ -313,7 +313,12 @@ if product == "KELP":
 
 ![round_2_manual_results_1](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_2_manual_results_1.gif)
 ![round_2_manual_results_2](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_2_manual_results_2.jpg)
+
+#### Both of our crates awarded us with around 33,000 to 34,000 SeaShells each. With an initial fee of 50,000 SeaShells for the second crate, it seems that we would have finished the manual trading challenge with more SeaShells if we had only chosen one crate. It is also worth nothing that the final distribution of crate picks was provided to us in [Round 4 of the wiki](https://imc-prosperity.notion.site/Round-4-19ee8453a0938112aa5fd7f0d060ffe6):
+
 ![round_2_manual_results_3](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_2_manual_results_3.jpg)
+
+#### ^^ Only the (x10 Multiplier, 1 Inhabitant) and (x20 Multiplier, 2 Inhabitants) crates ended up being profitable as second choices, which we did not expect, as we assumed that they would have had enough picks to have their maximum participant pick percentages exceeded; overall, these crates seemed to risky for us to choose at the time, so a more likely change we could have made to increase our profit is to only choose one crate and forgo the second crate and the 50,000 SeaShell fee.
 
 </details>
 
