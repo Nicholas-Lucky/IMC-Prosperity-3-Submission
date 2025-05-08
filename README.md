@@ -327,7 +327,9 @@ if product == "KELP":
 <summary><h2>Round 3</h2></summary>
 
 ### Algorithmic Trading
-#### Info on algo round
+#### As mentioned in [Round 3 of the wiki](https://imc-prosperity.notion.site/Round-3-19ee8453a093811082dbcdd1f6c1cd0f), Round 3 introduced us to the following six tradable products: `VOLCANIC_ROCK_VOUCHER_9500`, `VOLCANIC_ROCK_VOUCHER_9750`, `VOLCANIC_ROCK_VOUCHER_10000`, `VOLCANIC_ROCK_VOUCHER_10250`, `VOLCANIC_ROCK_VOUCHER_10500`, and `VOLCANIC_ROCK`. `VOLCANIC_ROCK_VOUCHER_9500`, `VOLCANIC_ROCK_VOUCHER_9750`, `VOLCANIC_ROCK_VOUCHER_10000`, `VOLCANIC_ROCK_VOUCHER_10250`, and `VOLCANIC_ROCK_VOUCHER_10500` are vouchers that grant us the ability to buy `VOLCANIC_ROCK` at a given price; this price is called the strike price, which we guessed meant that, for example, `VOLCANIC_ROCK_VOUCHER_9500` allows us to buy `VOLCANIC_ROCK` at 9,500 SeaShells. These vouchers also have expiration dates, however it seems that their expiration dates outlast all 5 rounds of the IMC Prosperity 3 competition, meaning that we do not need to worry about expiration dates for this year's competition; expiration dates may ceratinly be a factor in next year's competition, however.
+
+#### The position limit for `VOLCANIC_ROCK` is `400`, the position limit for `VOLCANIC_ROCK_VOUCHER_9500` is `200`, the position limit for `VOLCANIC_ROCK_VOUCHER_9750` is `200`, the position limit for `VOLCANIC_ROCK_VOUCHER_10000` is `200`, the position limit for `VOLCANIC_ROCK_VOUCHER_10250` is `200`, the position limit for `VOLCANIC_ROCK_VOUCHER_10500` is `200`.
 
 #### Info on what we did
 
