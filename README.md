@@ -319,7 +319,6 @@ if product == "KELP":
 ![round_2_manual_results_3](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_2_manual_results_3.jpg)
 
 #### ^^ Only the (x10 Multiplier, 1 Inhabitant) and (x20 Multiplier, 2 Inhabitants) crates ended up being profitable as second choices, which we did not expect, as we assumed that they would have had enough picks to have their maximum participant pick percentages exceeded; overall, these crates seemed to risky for us to choose at the time, so a more likely change we could have made to increase our profit is to only choose one crate and forgo the second crate and the 50,000 SeaShell fee.
-
 </details>
 
 ---
@@ -390,9 +389,11 @@ if sell_offset < 0:
 
 #### These are the results of our Round 2 manual trading challenge: (change later)
 
-![round_2_manual_results_1](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_2_manual_results_1.gif)
-![round_2_manual_results_2](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_2_manual_results_2.jpg)
+![round_3_manual_results_1](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_3_manual_results_1.gif)
+![round_3_manual_results_2](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_3_manual_results_2.jpg)
+![round_3_manual_results_3](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_3_manual_results_3.gif)
 
+#### ^^ It seems that both of our bids were higher than the participant averages, which might have meant that we were more likely to receive trades with the Sea Turtles and hence acquire more Flippers to sell.
 </details>
 
 ---
