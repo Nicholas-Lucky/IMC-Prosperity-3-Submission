@@ -376,6 +376,13 @@ if sell_offset < 0:
     sell_offset *= -1
 ```
 
+#### These are the results of our Round 3 algorithm:
+
+![round_3_algorithm_results_1](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_3_algorithm_results_1.gif)
+![round_3_algorithm_results_2](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_3_algorithm_results_2.gif)
+
+#### ^^ We suspect that possible reasons for this downward trend could include faulty logic and implementation for trading vouchers and `VOLCANIC_ROCK`, and continued faulty implementation for our "crash detectors".
+
 ### Manual Trading
 #### Info on manual round
 
