@@ -386,7 +386,13 @@ if sell_offset < 0:
 ### Manual Trading
 #### As mentioned in [Round 3 of the wiki](https://imc-prosperity.notion.site/Round-3-19ee8453a093811082dbcdd1f6c1cd0f), the manual trading challenge for Round 3 presents us with an opportunity to trade Flippers with a group of Sea Turtles. Our goal is to offer 2 bids for Flippers that are at the best price for the Sea Turtles to accept; we think that it is not required to place 2 bids, however it is encouraged to place 2 bids. For these bids, each of the Sea Turtles will accept the lowest bid that is over their price, which can range from 160 to 200, and from 250 to 320. For our second bid, the Sea Turtles will trade if our bid is higher than the average of all second bids from all participants; if our bid is lower than the average of all second bids from all participants, then the probability of a Sea Turtle trading with us will be decreased. After these trades are made, we are able to sell our Flippers for 320 SeaShells each.
 
-#### Info on what we did
+#### This round's manual trading challenge was mostly done by Tyler Thomas, in which he applied a Monte Carlo Simulation to find ideal bid amounts, and adjusted these numbers to be more conservative.
+
+#### These are the results of our Round 2 manual trading challenge: (change later)
+
+![round_2_manual_results_1](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_2_manual_results_1.gif)
+![round_2_manual_results_2](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_2_manual_results_2.jpg)
+
 </details>
 
 ---
