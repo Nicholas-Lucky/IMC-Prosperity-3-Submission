@@ -589,6 +589,19 @@ newData.append(current_positions)
 traderData = str(newData)
 ```
 
+#### These are the results of our Round 4 algorithm:
+
+![round_4_algorithm_results_1](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_4_algorithm_results_1.gif)
+![round_4_algorithm_results_2](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_4_algorithm_results_2.jpg)
+
+#### This was a very unexpected result on our end. Looking at the submission logs, we found the following warning:
+
+![round_4_algorithm_results_3](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_4_algorithm_results_3.jpg)
+
+#### We assumed that this warning was the main issue preventing our code from running in the final submission. Hence, we made an effort to fix this error in the next round. We were not aware, however, of another error that took place in our submission, which occurred later in the submission logs:
+
+![round_4_algorithm_results_4](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_4_algorithm_results_4.jpg)
+
 ### Manual Trading
 #### Info on manual round
 
