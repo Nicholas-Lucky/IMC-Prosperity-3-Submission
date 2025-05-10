@@ -403,7 +403,7 @@ if sell_offset < 0:
 ### Algorithmic Trading
 #### As mentioned in [Round 4 of the wiki](https://imc-prosperity.notion.site/Round-4-19ee8453a0938112aa5fd7f0d060ffe6), Round 4 introduced us to the `MAGNIFICENT_MACARONS`, a tradable product whose value is dependent on multiple factors such as `transportFees`, `exportTariff`, `importTariff`, `sugarPrice`, and `sunlightIndex` — at least we assumed that these are factors that can influence the value of `MAGNIFICENT_MACARONS`. The wiki provided us with a hint that, if `sunlightIndex` went and remained below a threshold called the CriticalSunlightIndex (CSI), then `sugarPrice` and `MAGNIFICENT_MACARONS` prices would increase; otherwise, `sugarPrice` and `MAGNIFICENT_MACARONS` prices would maintain their respective fair values.
 
-#### It is worth noting that it seems that `MAGNIFICENT_MACARONS` is the only newly-introduced tradable product this round; `transportFees`, `exportTariff`, `importTariff`, `sugarPrice`, and `sunlightIndex` are not tradable. In addition, it seems that it is possible to perform conversions with the `MAGNIFICENT_MACARONS`, with `MAGNIFICENT_MACARONS` having a conversion limit of `10`.
+#### It is worth noting that it seems that `MAGNIFICENT_MACARONS` is the only newly-introduced tradable product this round; `transportFees`, `exportTariff`, `importTariff`, `sugarPrice`, and `sunlightIndex` are not tradable. In addition, we found that information regarding the `transportFees`, `exportTariff`, `importTariff`, `sugarPrice`, and `sunlightIndex` for a specific iteration was found in `state.observations.conversionObservations`; it seems that `state.observations.conversionObservations` contains the conversion observations for all products, including the `MAGNIFICENT_MACARONS`, so we would need to access the item in `state.observations.conversionObservations` with `"MAGNIFICENT_MACARONS"` as the key. Finally, it seems that it is possible to perform conversions with the `MAGNIFICENT_MACARONS`, with `MAGNIFICENT_MACARONS` having a conversion limit of `10`.
 
 #### `MAGNIFICENT_MACARONS` has a position limit of `75`.
 
@@ -475,6 +475,81 @@ def initialize_product_information(products, sell_order_history, buy_order_histo
     # Return the products' information
     return product_info
 ```
+
+#### For calculating the buy and sell thresholds for the `MAGNIFICENT_MACARONS` in particular, we began by keeping track of both the product's `sell_order_history` and `buy_order_history`, which we used to calculate the averages of the histories, and these average of the 2 averages, which we called the `historical_average_mid_price`. From there, we also kept track of the possible factors influencing the value of `MAGNIFICENT_MACARONS` (`transportFees`, `exportTariff`, `importTariff`, `sugarPrice`, and `sunlightIndex`) through `state.observations.conversionObservations`. From this, we were able to build an `observation_info_history`, similar to how we built `sell_order_history` and `buy_order_history`, to compare with the current values of the factors during an iteration.
+
+```python
+# In round_4_experimental.py
+# In the Trader class
+
+macaron_state = state.observations.conversionObservations["MAGNIFICENT_MACARONS"]
+
+# Initialize product information
+products = initialize_product_information(PRODUCT_NAMES, sell_order_history, buy_order_history, current_positions, previous_macaron_information, macaron_state)
+
+previous_macaron_information["askPrice"].append(macaron_state.askPrice)
+previous_macaron_information["bidPrice"].append(macaron_state.bidPrice)
+previous_macaron_information["exportTariff"].append(macaron_state.exportTariff)
+previous_macaron_information["importTariff"].append(macaron_state.importTariff)
+previous_macaron_information["sugarPrice"].append(macaron_state.sugarPrice)
+previous_macaron_information["sunlightIndex"].append(macaron_state.sunlightIndex)
+previous_macaron_information["transportFees"].append(macaron_state.transportFees)
+```
+
+#### Given the historical values of `transportFees`, `exportTariff`, `importTariff`, `sugarPrice`, and `sunlightIndex`, we calculated the values' mean and standard deviations. We then used the current values (of a current iteration) of `transportFees`, `exportTariff`, `importTariff`, `sugarPrice`, and `sunlightIndex` to calculate the normalized values of these current values using the following formula:
+
+#### $x_{normalized}=\frac{x-\text{Mean}}{\text{Standard Deviation}}$
+
+```python
+# In round_4_experimental.py
+# In the Macaron class
+
+self.export_tariff = current_observation_info.exportTariff
+self.import_tariff = current_observation_info.importTariff
+self.sugar_price = current_observation_info.sugarPrice
+self.sunlight = current_observation_info.sunlightIndex
+self.transport_fees = current_observation_info.transportFees
+
+# ...
+
+self.normalized_export_tariff = 0
+if self.historical_export_tariff_std != 0:
+    self.normalized_export_tariff = (self.export_tariff - self.historical_export_tariff_mean) / self.historical_export_tariff_std
+
+# ^^ similar normalization calculations done for the rest of the factors
+```
+
+#### We then took a weighted sum of these normalized values, which we used as both our buy and sell thresholds for `MAGNIFICENT_MACARONS`.
+
+```python
+# In round_4_experimental.py
+# In the Macaron class
+
+self.MVI_multiplier = (self.normalized_export_tariff * self.export_tariff_weight) + \
+                      (self.normalized_import_tariff * self.import_tariff_weight) + \
+                      (self.normalized_sugar_price * self.sugar_price_weight) + \
+                      (self.normalized_sunlight * self.sunlight_weight) + \
+                      (self.normalized_transport_fees * self.transport_fees_weight)
+
+self.hybrid_average_mid_price = (0.3 * self.historical_average_mid_price) + (0.7 * self.current_average_mid_price)
+self.acceptable_buy_price = self.hybrid_average_mid_price * self.MVI_multiplier
+self.acceptable_sell_price = self.acceptable_buy_price
+```
+
+#### The weights for the factors are as follows:
+
+```python
+# In round_4_experimental.py
+# In the Macaron class
+
+self.export_tariff_weight = 0.1
+self.import_tariff_weight = 0.1
+self.sugar_price_weight = 0.1
+self.sunlight_weight = -0.4
+self.transport_fees_weight = 0.1
+```
+
+#### ^^ These weights are currently hardcoded, and were chosen so that `sunlightIndex` would have a greater impact on the value of `MAGNIFICENT_MACARONS` than the rest of the factors, given the hint provided by the competition; `self.sunlight_weight` was set to `-0.4` instead of `0.4` because, if the hint is accurate, a low enough `sunlightIndex` could cause higher `MAGNIFICENT_MACARONS` prices — implying a negative relationship between `sunlightIndex` and `MAGNIFICENT_MACARONS`.
 
 ### Manual Trading
 #### Info on manual round
