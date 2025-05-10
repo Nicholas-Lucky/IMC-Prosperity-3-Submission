@@ -551,6 +551,44 @@ self.transport_fees_weight = 0.1
 
 #### ^^ These weights are currently hardcoded, and were chosen so that `sunlightIndex` would have a greater impact on the value of `MAGNIFICENT_MACARONS` than the rest of the factors, given the hint provided by the competition; `self.sunlight_weight` was set to `-0.4` instead of `0.4` because, if the hint is accurate, a low enough `sunlightIndex` could cause higher `MAGNIFICENT_MACARONS` prices — implying a negative relationship between `sunlightIndex` and `MAGNIFICENT_MACARONS`.
 
+#### Regarding our past products, we found through [round_4_resin_only.py](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/round_4/round_4_resin_only.py) that using both a `sell_order_history` and `buy_order_history` to calculate the buy and sell thresholds allowed us to achieve noticeably more profits from `RAINFOREST_RESIN` than with just `sell_order_history`. As a result, we decided to add this change to all the past products. We would track previous buy orders in `buy_order_history`, similarly to how we tracked previous sell orders in `sell_order_history`. In calculating the buy and sell thresholds of a product, we would then take the averages of `sell_order_history` and `buy_order_history`, and find the average of these two averages.
+
+```python
+# In round_4_resin_only.py
+
+class Product:
+    def __init__(self, name, sell_order_history, buy_order_history, current_position):
+        # ...
+        
+        self.acceptable_buy_price = (self.sell_order_average + self.buy_order_average) / 2 - self.default_offset
+        self.acceptable_sell_price = (self.sell_order_average + self.buy_order_average) / 2 + self.default_offset
+
+# ...
+
+def initialize_product_information(products, sell_order_history, buy_order_history, current_positions):
+    # ...
+    
+    product_info["RAINFOREST_RESIN"].set_buy_price_offset(0)
+    product_info["RAINFOREST_RESIN"].set_sell_price_offset(0)
+
+# ...
+
+# In the Trader class
+best_bid, best_bid_amount = get_highest_buy_order(list(order_depth.buy_orders.items()))
+update_buy_order_history(buy_order_history, product, best_bid)
+
+# ...
+
+newData = []
+newData.append(sell_order_history)
+newData.append(buy_order_history)  # buy_order_history is included in traderData
+newData.append(current_positions)
+
+# String value holding Trader state data required. 
+# It will be delivered as TradingState.traderData on next execution.
+traderData = str(newData)
+```
+
 ### Manual Trading
 #### Info on manual round
 
