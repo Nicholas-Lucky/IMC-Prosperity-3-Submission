@@ -14,7 +14,7 @@
 #### Further details on this year's competition can be found on the [Prosperity 3 Wiki](https://imc-prosperity.notion.site/Prosperity-3-Wiki-19ee8453a09380529731c4e6fb697ea4).
 ---
 <details>
-<summary><h2>Round 1</h2></summary>
+<summary><h2>Round 1 🦑</h2></summary>
 
 ### Algorithmic Trading
 #### As mentioned in [Round 1 of the wiki](https://imc-prosperity.notion.site/Round-1-19ee8453a09381d18b78cf3c21e5d916), Round 1 introduced us to our first three tradable products: `RAINFOREST_RESIN`, `KELP`, and `SQUID_INK`. These products seem to have varying levels of stability, with `RAINFOREST_RESIN` having relatively stable values, `KELP` having some variation, and `SQUID_INK` having the most volatility of the three products. `RAINFOREST_RESIN` has a position limit of `50`, `KELP` has a position limit of `50`, and `SQUID_INK` has a position limit of `50`.
@@ -146,7 +146,7 @@ elif product == "KELP":
 
 ---
 <details>
-<summary><h2>Round 2</h2></summary>
+<summary><h2>Round 2 🥐</h2></summary>
 
 ### Algorithmic Trading
 #### As mentioned in [Round 2 of the wiki](https://imc-prosperity.notion.site/Round-2-19ee8453a09381a580cdf9c0468e9bc8), Round 2 introduced us to 5 new tradeable products: `CROISSANTS`, `JAMS`, `DJEMBES`, `PICNIC_BASKET1`, and `PICNIC_BASKET2`. `PICNIC_BASKET1` and `PICNIC_BASKET2` are a little different in that they contain multiple products: `PICNIC_BASKET1` contains 6 `CROISSANTS`, 3 `JAMS`, and 1 `DJEMBES`, while `PICNIC_BASKET2` contains 4 `CROISSANTS` and 2 `JAMS`.
@@ -323,7 +323,7 @@ if product == "KELP":
 
 ---
 <details>
-<summary><h2>Round 3</h2></summary>
+<summary><h2>Round 3 🌋</h2></summary>
 
 ### Algorithmic Trading
 #### As mentioned in [Round 3 of the wiki](https://imc-prosperity.notion.site/Round-3-19ee8453a093811082dbcdd1f6c1cd0f), Round 3 introduced us to the following six tradable products: `VOLCANIC_ROCK_VOUCHER_9500`, `VOLCANIC_ROCK_VOUCHER_9750`, `VOLCANIC_ROCK_VOUCHER_10000`, `VOLCANIC_ROCK_VOUCHER_10250`, `VOLCANIC_ROCK_VOUCHER_10500`, and `VOLCANIC_ROCK`. `VOLCANIC_ROCK_VOUCHER_9500`, `VOLCANIC_ROCK_VOUCHER_9750`, `VOLCANIC_ROCK_VOUCHER_10000`, `VOLCANIC_ROCK_VOUCHER_10250`, and `VOLCANIC_ROCK_VOUCHER_10500` are vouchers that grant us the ability to buy `VOLCANIC_ROCK` at a given price; this price is called the strike price, which we guessed meant that, for example, `VOLCANIC_ROCK_VOUCHER_9500` allows us to buy `VOLCANIC_ROCK` at 9,500 SeaShells. These vouchers also have expiration dates, however it seems that their expiration dates outlast all 5 rounds of the IMC Prosperity 3 competition, meaning that we do not need to worry about expiration dates for this year's competition; expiration dates may ceratinly be a factor in next year's competition, however.
@@ -398,7 +398,7 @@ if sell_offset < 0:
 
 ---
 <details>
-<summary><h2>Round 4</h2></summary>
+<summary><h2>Round 4 🍪</h2></summary>
 
 ### Algorithmic Trading
 #### As mentioned in [Round 4 of the wiki](https://imc-prosperity.notion.site/Round-4-19ee8453a0938112aa5fd7f0d060ffe6), Round 4 introduced us to the `MAGNIFICENT_MACARONS`, a tradable product whose value is dependent on multiple factors such as `transportFees`, `exportTariff`, `importTariff`, `sugarPrice`, and `sunlightIndex` — at least we assumed that these are factors that can influence the value of `MAGNIFICENT_MACARONS`. The wiki provided us with a hint that, if `sunlightIndex` went and remained below a threshold called the CriticalSunlightIndex (CSI), then `sugarPrice` and `MAGNIFICENT_MACARONS` prices would increase; otherwise, `sugarPrice` and `MAGNIFICENT_MACARONS` prices would maintain their respective fair values.
@@ -681,7 +681,7 @@ def scale_round_2_to_round_2(x_array, y_array):
 
 ---
 <details>
-<summary><h2>Round 5</h2></summary>
+<summary><h2>Round 5 🐜</h2></summary>
 
 ### Algorithmic Trading
 #### Info on algo round
