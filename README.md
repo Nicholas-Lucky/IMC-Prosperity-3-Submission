@@ -387,7 +387,7 @@ if sell_offset < 0:
 
 #### This round's manual trading challenge was mostly done by Tyler Thomas, in which he applied a Monte Carlo Simulation to find ideal bid amounts, and adjusted these numbers to be more conservative.
 
-#### These are the results of our Round 2 manual trading challenge: (change later)
+#### These are the results of our Round 3 manual trading challenge:
 
 ![round_3_manual_results_1](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_3_manual_results_1.gif)
 ![round_3_manual_results_2](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_3_manual_results_2.jpg)
@@ -603,9 +603,47 @@ traderData = str(newData)
 ![round_4_algorithm_results_4](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_4_algorithm_results_4.jpg)
 
 ### Manual Trading
-#### Info on manual round
+#### As mentioned in [Round 4 of the wiki](https://imc-prosperity.notion.site/Round-4-19ee8453a0938112aa5fd7f0d060ffe6), the manual trading challenge for Round 4 was a game of "Seal or No Seal", which was similar to the manual trading challenge for Round 2. In the challenge, a grid of suitcases was presented, with each suitcase containing a base amount of 10,000 SeaShells, a multiplier, and a predefined number of contestants we will need to share the SeaShells of the suitcase with. The final amount of SeaShells that will be awarded from a suitcase will also be influenced by the percentage of participants who pick that particular suitcase. We are able to choose up to 3 suitcases, with the first suitcase being free to pick, the second suitcase requiring an initial 50,000 SeaShell fee, and the third suitcase requiring an initial 100,000 SeaShell fee (if we remember correctly).
 
-#### Info on what we did
+![round_4_manual](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_4_manual.png)
+
+#### The formula for calculating the final amount of SeaShells awarded from a suitcase remains identical to the formula used in the manual trading challenge of Round 2:
+#### $\text{Final Amount}=\frac{10,000 * \text{Multiplier}}{\text{Inhabitants} + (\text{Participant Pick Percentage} * 100)}$
+
+#### Our work for this round's manual trading challenge can be found in [round_4_manual_trading.py](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/round_4/round_4_manual_trading.py). Given that this manual trading challenge had more options to choose than the manual trading challenge of Round 2, we felt a lot more comfortable with picking a second suitcase, as we hoped that the participants' picks will be distributed enough across all the suitcases to leave many of the suitcases profitable as a second choice. Identical to the manual trading challenge of Round 2, the "final multiplier" needed for a suitcase to be profitable as a second choice needs to be greater than or equal to 5:
+#### $\frac{\text{Multiplier}}{\text{Inhabitants} + (\text{Participant Pick Percentage} * 100)}\ge5$
+
+#### Calculating the `max_percentage` of participants who can pick a suitcase for the suitcase to be profitable has a second choice, for all suitcases, yielded the following output:
+
+![round_4_manual_code_output_1](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_4_manual_code_output_1.jpg)
+
+#### ^^ The maximum percentages for the suitcases sum up to around 125%, which we interpret as a certainty that there will exist at least one suitcase that is profitable as a second choice.
+
+#### In attempting to narrow down the safest and most profitable suitcases, we graphed line graphs of the suitcases and their respective `max_percentage` of participants alongside the final distribution of crate picks from Round 2's manual trading challenge (given to us in [Round 4 of the wiki](https://imc-prosperity.notion.site/Round-4-19ee8453a0938112aa5fd7f0d060ffe6)). The x-axis of the graph is the displayed multiplier of the suitcases/crates, and the y-axis of the graph is the percentage of participants that are expected to/actually pick a particular suitcase/crate. We also attempted to account for the differences in scenarios between the two manual trading challenges by scaling the distribution of Round 2 crate picks to better fit the condition of the Round 4 suitcases.
+
+```python
+# In round_4_manual_trading.py
+
+def scale_round_2_to_round_2(x_array, y_array):
+    for i, j in enumerate(x_array):
+        x_array[i] = (j * 10) / 9
+
+    # Previously y_array[i] = (j * 5) / 11.807
+    # Now j / 2 because we're guessing that with 2x more options, a Round 4 suitcase will have half as many picks as a Round 2 crate
+    for i, j in enumerate(y_array):
+        y_array[i] = (j / 2)
+```
+
+#### The unmodified line graphs are displayed in the graph titled _**Round 2 (RAW values) vs Round 4 (IDEAL)**_, while the modified line graphs are displayed in the graph titled _**Round 2 (SCALED values) vs Round 4 (IDEAL)**_.
+
+#### These are the results of our Round 2 manual trading challenge:
+
+![round_4_manual_code_output_2](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_4_manual_code_output_2.jpg)
+![round_4_manual_code_output_3](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_4_manual_code_output_3.jpg)
+![round_4_manual_code_output_4](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_4_manual_code_output_4.jpg)
+
+![round_4_manual_results_1](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_4_manual_results_1.gif)
+![round_4_manual_results_2](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_4_manual_results_2.jpg)
 </details>
 
 ---
