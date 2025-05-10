@@ -407,7 +407,74 @@ if sell_offset < 0:
 
 #### `MAGNIFICENT_MACARONS` has a position limit of `75`.
 
-#### Info on what we did
+#### At the end of Round 3 and the start of Round 4, we decided to refactor our code to make our `Trader` class easier to read and implement. We created a `Product` class to house the relevant information for each of our tradable products. We hope that this form of abstraction would allow for our `Trader` class to be more understandable and concise, especially if we needed to scroll through the class for a specific code snippet.
+
+```python
+# In round_4_experimental.py
+
+class Product:
+    def __init__(self, name, sell_order_history, buy_order_history, current_position):
+        # Name
+        self.name = name
+
+        # Sell order history
+        self.sell_order_history = sell_order_history
+        self.sell_order_average = get_average(self.sell_order_history)
+
+        # Buy order history
+        self.buy_order_history = buy_order_history
+        self.buy_order_average = get_average(self.buy_order_history)
+
+        # Mid Price
+        self.average_mid_price = (self.sell_order_average + self.sell_order_average) / 2
+
+        # Position information
+        self.position = current_position
+        self.position_limit = get_position_limits()[name]
+
+        # Default buy and sell thresholds
+        self.default_offset = self.calculate_offset(10, 3)
+        self.current_offset = self.default_offset
+        self.acceptable_buy_price = self.average_mid_price - self.default_offset
+        self.acceptable_sell_price = self.average_mid_price + self.default_offset
+
+    # Other functionality and methods for the Product class...
+```
+
+#### We also created a `Macaron` child class that inherits the general setup of the `Product` class and houses additional information and calculations specific to the `MAGNIFICENT_MACARONS` product. In hindsight, it does seem that we ended up not using any of the `Product` class functionality in the `Macaron` child class, so it may have been optional for the `Macaron` class to be a child class.
+
+```python
+# In round_4_experimental.py
+
+class Macaron(Product):
+    def __init__(self, name, sell_order_history, buy_order_history, current_position, observation_info_history, current_observation_info):
+        #super().__init__(name, sell_order_history, buy_order_history, current_position)  # Commented out
+
+        # Add the initializer logic...
+```
+
+#### To further support the abstraction of our products' information in the `Trader` class, we created a function called `initialize_product_information()` to return a dictionary that houses the product names as keys and a respective `Product` or `Macaron` (for `MAGNIFICENT_MACARONS`) class as values. We were also able to use `initialize_product_information()` to set the buy and sell thresholds for `PICNIC_BASKET1` and `PICNIC_BASKET2` based on our previous calculations with the products contained in these baskets, and manually set offsets for the thresholds.
+
+```python
+# In round_4_experimental.py
+
+def initialize_product_information(products, sell_order_history, buy_order_history, current_positions, observation_info_history, current_observation_info):
+    product_info = {}
+    for product in products:
+        if product == "MAGNIFICENT_MACARONS":
+            product_info["MAGNIFICENT_MACARONS"] = Macaron(product, sell_order_history[product], buy_order_history[product], current_positions[product], observation_info_history, current_observation_info)
+            continue
+        product_info[product] = Product(product, sell_order_history[product], buy_order_history[product], current_positions[product])
+    
+    # Set picnic basket buy and sell thresholds
+    # ...
+
+    # Manual offset adjustments
+    # ...
+
+    # Return the products' information
+    return product_info
+```
 
 ### Manual Trading
 #### Info on manual round
