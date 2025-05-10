@@ -681,7 +681,7 @@ def scale_round_2_to_round_2(x_array, y_array):
 
 ---
 <details>
-<summary><h2>Round 5 🐜</h2></summary>
+<summary><h2>Round 5 🕵️‍♀️</h2></summary>
 
 ### Algorithmic Trading
 #### Info on algo round
