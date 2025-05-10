@@ -403,7 +403,7 @@ if sell_offset < 0:
 ### Algorithmic Trading
 #### As mentioned in [Round 4 of the wiki](https://imc-prosperity.notion.site/Round-4-19ee8453a0938112aa5fd7f0d060ffe6), Round 4 introduced us to the `MAGNIFICENT_MACARONS`, a tradable product whose value is dependent on multiple factors such as `transportFees`, `exportTariff`, `importTariff`, `sugarPrice`, and `sunlightIndex` — at least we assumed that these are factors that can influence the value of `MAGNIFICENT_MACARONS`. The wiki provided us with a hint that, if `sunlightIndex` went and remained below a threshold called the CriticalSunlightIndex (CSI), then `sugarPrice` and `MAGNIFICENT_MACARONS` prices would increase; otherwise, `sugarPrice` and `MAGNIFICENT_MACARONS` prices would maintain their respective fair values.
 
-#### It is worth noting that it seems that `MAGNIFICENT_MACARONS` is the only newly-introduced tradable product this round; `transportFees`, `exportTariff`, `importTariff`, `sugarPrice`, and `sunlightIndex` are not tradable. In addition, we found that information regarding the `transportFees`, `exportTariff`, `importTariff`, `sugarPrice`, and `sunlightIndex` for a specific iteration was found in `state.observations.conversionObservations`; it seems that `state.observations.conversionObservations` contains the conversion observations for all products, including the `MAGNIFICENT_MACARONS`, so we would need to access the item in `state.observations.conversionObservations` with `"MAGNIFICENT_MACARONS"` as the key. Finally, it seems that it is possible to perform conversions with the `MAGNIFICENT_MACARONS`, with `MAGNIFICENT_MACARONS` having a conversion limit of `10`.
+#### It is worth noting that it seems that `MAGNIFICENT_MACARONS` is the only newly-introduced tradable product this round; `transportFees`, `exportTariff`, `importTariff`, `sugarPrice`, and `sunlightIndex` are not tradable. In addition, we found that information regarding the `transportFees`, `exportTariff`, `importTariff`, `sugarPrice`, and `sunlightIndex` for a specific iteration was found in `state.observations.conversionObservations`; it seems that `state.observations.conversionObservations` contains the conversion observations for all products, including the `MAGNIFICENT_MACARONS`, so we would need to access the item in `state.observations.conversionObservations` with `"MAGNIFICENT_MACARONS"` as the key. Finally, it seems that it is possible to perform conversions with the `MAGNIFICENT_MACARONS`, with `MAGNIFICENT_MACARONS` having a conversion limit of `10`. Due to inexperience and time constraints, we decided not to attempt to interact with conversions for `MAGNIFICENT_MACARONS`.
 
 #### `MAGNIFICENT_MACARONS` has a position limit of `75`.
 
@@ -550,15 +550,6 @@ self.transport_fees_weight = 0.1
 ```
 
 #### ^^ These weights are currently hardcoded, and were chosen so that `sunlightIndex` would have a greater impact on the value of `MAGNIFICENT_MACARONS` than the rest of the factors, given the hint provided by the competition; `self.sunlight_weight` was set to `-0.4` instead of `0.4` because, if the hint is accurate, a low enough `sunlightIndex` could cause higher `MAGNIFICENT_MACARONS` prices — implying a negative relationship between `sunlightIndex` and `MAGNIFICENT_MACARONS`.
-
-#### We also decided not to try conversions for `MAGNIFICENT_MACARONS` due to inexperience and time constraints.
-
-```python
-# In round_4_experimental.py
-# In the Trader class
-
-conversions = 0
-```
 
 #### Regarding our past products, we found through [round_4_resin_only.py](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/round_4/round_4_resin_only.py) that using both a `sell_order_history` and `buy_order_history` to calculate the buy and sell thresholds allowed us to achieve noticeably more profits from `RAINFOREST_RESIN` than with just `sell_order_history`. As a result, we decided to add this change to all the past products. We would track previous buy orders in `buy_order_history`, similarly to how we tracked previous sell orders in `sell_order_history`. In calculating the buy and sell thresholds of a product, we would then take the averages of `sell_order_history` and `buy_order_history`, and find the average of these two averages.
 
