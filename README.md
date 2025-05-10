@@ -636,14 +636,47 @@ def scale_round_2_to_round_2(x_array, y_array):
 
 #### The unmodified line graphs are displayed in the graph titled _**Round 2 (RAW values) vs Round 4 (IDEAL)**_, while the modified line graphs are displayed in the graph titled _**Round 2 (SCALED values) vs Round 4 (IDEAL)**_.
 
-#### These are the results of our Round 2 manual trading challenge:
-
 ![round_4_manual_code_output_2](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_4_manual_code_output_2.jpg)
 ![round_4_manual_code_output_3](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_4_manual_code_output_3.jpg)
+
+#### ^^ We interpreted _**Round 2 (SCALED values) vs Round 4 (IDEAL)**_ to mean that, if participants picked suitcases the same way they picked the crates in Round 2's manual trading challenge, the following suitcases would be profitable as a second choice:
+1. x10 Multiplier, 1 Contestant
+2. x23 Multiplier, 2 Contestants
+3. x30 Multiplier, 2 Contestants
+4. x31 Multiplier, 2 Contestants
+5. x37 Multiplier, 3 Contestants
+6. x40 Multiplier, 3 Contestants
+7. x41 Multiplier, 3 Contestants (optimal)
+8. x47 Multiplier, 3 Contestants (optimal)
+9. x50 Multiplier, 4 Contestants
+10. x60 Multiplier, 4 Contestants
+11. x70 Multiplier, 4 Contestants
+12. x73 Multiplier, 4 Contestants
+13. x89 Multiplier, 8 Contestants
+
+#### From _**Round 2 (SCALED values) vs Round 4 (IDEAL)**_, it would seem that the suitcases with (x41 Multiplier, 3 Contestants) and (x47 Multiplier, 3 Contestants) are the safest and most profitable to pick. Tyler Thomas, however, pointed out that it is unlikely that the participants' picks will be identical to Round 2's manual trading challenge, and considered the possibility of participants now being less likely to pick suitcases with higher multipliers: in Round 2's manual trading challenge, the crates with the highest multipliers were the most frequently picked; with these crates turning out to not be profitable, participants may be less inclined to pick suitcases with higher multipliers in this round's manual trading challenge; if this is the case, suitcases with higher multipliers would be picked less frequently, while the rest of the suitcases would be picked more frequently; consequently, suitcases with higher multipliers would be the most profitable, while the suitcases with multipliers between 30-50, while still safe, would be less profitable than what our line graphs imply. After some discussion and consideration of both the line graphs and Tyler's remarks, we ended up choosing the following suitcases:
+1. x89 Multiplier, 8 Contestants
+2. x90 Multiplier, 10 Contestants
+
+#### We also considered the possibility of choosing a third suitcase, however we quickly decided against such a choice, as we felt that it was very unlikely, even more so than the possibility of a second crate pick in Round 2's manual trading challenge, that any of the suitcases would be profitable as a third choice. This is supported by a slightly modified version of round_4_manual_trading.py, in which we changed `max_percent_to_be_profitable` from `5` to `10`; in hindsight, it seems that `max_percent_to_be_profitable` should have been renamed to `max_multiplier_to_be_profitable`.
+
+#### $10,000 * \frac{\text{Multiplier}}{\text{Inhabitants} + (\text{Participant Pick Percentage} * 100)}\ge100,000$
+#### $\frac{\text{Multiplier}}{\text{Inhabitants} + (\text{Participant Pick Percentage} * 100)}\ge\frac{100,000}{10,000}$
+#### $\frac{\text{Multiplier}}{\text{Inhabitants} + (\text{Participant Pick Percentage} * 100)}\ge10$
+
 ![round_4_manual_code_output_4](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_4_manual_code_output_4.jpg)
+
+#### ^^ It is worth noting that, as supported by the code, the suitcases with (x100 Multiplier, 15 Contestants) and (x90 Multiplier, 10 Contestants) would not be profitable as a third choice regardless of how frequently they are picked, as their predefined number of contestants would be enough to reduce the multiplier below 10. As an example, if 0% of participants picked suitcase (x90 Multiplier, 10 Contestants), suitcase (x90 Multiplier, 10 Contestants) would have awarded 90,000 SeaShells, which is not enough to cover the initial 100,000 SeaShell fee of a third choice.
+#### $\text{Final Amount}=\frac{10,000 * 90}{10 + (0 * 100)}$
+#### $\text{Final Amount}=\frac{900,000}{10}$
+#### $\text{Final Amount}=90,000\text{ SeaShells}<100,000\text{ SeaShells (Initial Fee)}$
+
+#### These are the results of our Round 4 manual trading challenge:
 
 ![round_4_manual_results_1](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_4_manual_results_1.gif)
 ![round_4_manual_results_2](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_4_manual_results_2.jpg)
+
+#### It is very clear that Tyler Thomas's predictions were correct.
 </details>
 
 ---
