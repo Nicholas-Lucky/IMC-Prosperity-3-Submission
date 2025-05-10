@@ -401,7 +401,11 @@ if sell_offset < 0:
 <summary><h2>Round 4</h2></summary>
 
 ### Algorithmic Trading
-#### Info on algo round
+#### As mentioned in [Round 4 of the wiki](https://imc-prosperity.notion.site/Round-4-19ee8453a0938112aa5fd7f0d060ffe6), Round 4 introduced us to the `MAGNIFICENT_MACARONS`, a tradable product whose value is dependent on multiple factors such as `transportFees`, `exportTariff`, `importTariff`, `sugarPrice`, and `sunlightIndex` — at least we assumed that these are factors that can influence the value of `MAGNIFICENT_MACARONS`. The wiki provided us with a hint that, if `sunlightIndex` went and remained below a threshold called the CriticalSunlightIndex (CSI), then `sugarPrice` and `MAGNIFICENT_MACARONS` prices would increase; otherwise, `sugarPrice` and `MAGNIFICENT_MACARONS` prices would maintain their respective fair values.
+
+#### It is worth noting that it seems that `MAGNIFICENT_MACARONS` is the only newly-introduced tradable product this round; `transportFees`, `exportTariff`, `importTariff`, `sugarPrice`, and `sunlightIndex` are not tradable. In addition, it seems that it is possible to perform conversions with the `MAGNIFICENT_MACARONS`, with `MAGNIFICENT_MACARONS` having a conversion limit of `10`.
+
+#### `MAGNIFICENT_MACARONS` has a position limit of `75`.
 
 #### Info on what we did
 
