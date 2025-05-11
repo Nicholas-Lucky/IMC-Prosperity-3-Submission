@@ -735,7 +735,23 @@ def small_dip_checker(sell_order_history, buy_order_history, recents_length, cur
 ![round_5_algorithm_results_3](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_5_algorithm_results_3.jpg)
 
 ### Manual Trading
-#### Info on manual round
+#### As mentioned in [Round 5 of the wiki](https://imc-prosperity.notion.site/Round-5-19ee8453a0938154bd42d50839bbccee), the manual trading challenge for Round 5 involves us trading in the West Archipelago exchange. Using an initial capital of 1,000,000 SeaShells, and information from the [Goldberg news source](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/round_5/goldberg_news_source.png), we needed to perform trades for an array of products: for each product, we needed to decide whether to buy or sell the product, and for what percentage of our initial capital. There is also a fee associated with each product we trade, which we found can be calculated using the following formula:
+#### $\text{Fee}=120*\text{Percentage of our Initial Capital Used}*100$
+
+#### ^^ For example, if we decided to buy Haystacks for 1% of our initial capital, the associated fee for such a trade would be:
+#### $\text{Fee}=120*(0.01*100)$
+#### $\text{Fee}=120\text{ SeaShells}$
+
+#### The goal of this manual trading challenge is to perform the correct trades (buys and sells) with the optimal percentages for these products, and secure as much profit from these trades as we can. The products we will be trading are provided as follows. It is worth noting that it seems that the [Goldberg news source](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/round_5/goldberg_news_source.png) has a news section for each of the products to be traded.
+1. Haystacks
+2. Ranch sauce
+3. Cacti Needle
+4. Solar panels
+5. Red Flags
+6. VR Monocle
+7. Quantum Coffee
+8. Moonshine
+9. Striped Shirts
 
 #### Info on what we did
 </details>
