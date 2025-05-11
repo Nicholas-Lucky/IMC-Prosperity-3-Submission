@@ -684,9 +684,46 @@ def scale_round_2_to_round_2(x_array, y_array):
 <summary><h2>Round 5 🕵️‍♀️</h2></summary>
 
 ### Algorithmic Trading
-#### Info on algo round
+#### As mentioned in [Round 5 of the wiki](https://imc-prosperity.notion.site/Round-5-19ee8453a0938154bd42d50839bbccee), Round 5 did not introduce any new tradable products. Instead, Round 5 introduced information on the counterparties we traded against, which the wiki mentioned can be found in the `OwnTrade` class.
 
-#### Info on what we did
+#### Due to time constraints, we did not develop a meaningful strategy that used the counterparty information. Instead, we attempted to refine our existing algorithm and fix the errors that prevented our code from running in the final submission. As mentioned in Round 4, an error that we encountered in our final submission log involved a `RuntimeWarning`, in which it seemed that NumPy's `mean()` function was being called on empty lists, presumably on the first iteration of the `Trader` class when our product and observation histories are initially empty. Hence, we decided to set variables that used NumPy's `mean()` function to `0` when the relevant lists are empty.
+
+```python
+# In round_5.py
+# In the Macaron class
+
+self.historical_ask_price_mean = 0
+if len(observation_info_history["askPrice"]) > 0:
+    self.historical_ask_price_mean = mean(observation_info_history["askPrice"])
+
+# ...
+
+self.historical_ask_price_std = 0
+if len(observation_info_history["askPrice"]) > 0:
+    self.historical_ask_price_std = std(observation_info_history["askPrice"])
+```
+
+#### In addition, we adjusted our "crash detectors" to include both the `sell_order_history` and `buy_order_history` in their calculations, as opposed to only the `sell_order_history` previously, and slightly tweaked their thresholds. We hope that these changes could help make our "crash detectors" more stable and reasonable, especially as this change did seem to have increased our overall profits in our submissions.
+
+```python
+# In round_5.py
+
+def big_dip_checker(sell_order_history, buy_order_history, current_mid_price, multiplier):
+    sell_average = get_average(sell_order_history)
+    buy_average = get_average(buy_order_history)
+    mid_average_value = (sell_average + buy_average) / 2
+
+    return current_mid_price > (mid_average_value * multiplier)
+
+def small_dip_checker(sell_order_history, buy_order_history, recents_length, current_mid_price, multiplier):
+    # ...
+
+    mid_recents_average = (sell_recents_average + buy_recents_average) / 2
+
+    #print(f"recents_average: {recents_average}")
+
+    return current_mid_price > (mid_recents_average * multiplier)
+```
 
 ### Manual Trading
 #### Info on manual round
