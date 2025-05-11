@@ -686,7 +686,7 @@ def scale_round_2_to_round_2(x_array, y_array):
 ### Algorithmic Trading
 #### As mentioned in [Round 5 of the wiki](https://imc-prosperity.notion.site/Round-5-19ee8453a0938154bd42d50839bbccee), Round 5 did not introduce any new tradable products. Instead, Round 5 introduced information on the counterparties we traded against, which the wiki mentioned can be found in the `OwnTrade` class.
 
-#### Due to time constraints, we did not develop a meaningful strategy that used the counterparty information. Instead, we attempted to refine our existing algorithm and fix the errors that prevented our code from running in the final submission. As mentioned in Round 4, an error that we encountered in our final submission log involved a `RuntimeWarning`, in which it seemed that NumPy's `mean()` function was being called on empty lists, presumably on the first iteration of the `Trader` class when our product and observation histories are initially empty. Hence, we decided to set variables that used NumPy's `mean()` function to `0` when the relevant lists are empty.
+#### Due to time constraints, we did not develop a meaningful strategy that used the counterparty information. Instead, we attempted to refine our existing algorithm and fix the errors that prevented our code from running in the final submission. As mentioned in Round 4, an error that we encountered in our final submission log involved a `RuntimeWarning`, in which it seemed that NumPy's `mean()` function was being called on empty lists, presumably on the first iteration of the `Trader` class when our product and `observation_info_history` histories are initially empty. Hence, we decided to set variables that used NumPy's `mean()` function to `0` when the relevant lists are empty.
 
 ```python
 # In round_5.py
@@ -703,7 +703,7 @@ if len(observation_info_history["askPrice"]) > 0:
     self.historical_ask_price_std = std(observation_info_history["askPrice"])
 ```
 
-#### In addition, we adjusted our "crash detectors" to include both the `sell_order_history` and `buy_order_history` in their calculations, as opposed to only the `sell_order_history` previously, and slightly tweaked their thresholds. We hope that these changes could help make our "crash detectors" more stable and reasonable, especially as this change did seem to have increased our overall profits in our submissions.
+#### In addition, we adjusted our "crash detectors" to include both the `sell_order_history` and `buy_order_history` in their calculations, as opposed to only the `sell_order_history` previously, and slightly tweaked their thresholds. We hope that these changes could help make our "crash detectors" more stable and reasonable, especially as this change seems to have increased our overall profits in our submissions.
 
 ```python
 # In round_5.py
@@ -724,6 +724,15 @@ def small_dip_checker(sell_order_history, buy_order_history, recents_length, cur
 
     return current_mid_price > (mid_recents_average * multiplier)
 ```
+
+#### These are the results of our Round 5 algorithm:
+
+![round_5_algorithm_results_1](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_5_algorithm_results_1.gif)
+![round_5_algorithm_results_2](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_5_algorithm_results_2.jpg)
+
+#### ^^ This, once again, was surprising to us, as we thought that the `RuntimeWarning` error was the sole reason for our algorithm previously not running. In hindsight, while the `RuntimeWarning` error no longer seems to be an issue in our algorithm, we did not end up fixing, or catching, another error in our algorithm, in which it seems that our algorithm would "time out". We currently have not implemented and tested possible fixes for this error, however, we suspect that this error might involve `observation_info_history` — as we may not have set a size limit for the history, causing the history to continuously append thousands of elements; this could explain why the algorithm did not seem to encounter errors during the first 4,000 iterations or so, as `observation_info_history` would have been smaller and easier to handle during these iterations.
+
+![round_5_algorithm_results_3](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_5_algorithm_results_3.jpg)
 
 ### Manual Trading
 #### Info on manual round
