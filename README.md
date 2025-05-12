@@ -742,7 +742,7 @@ def small_dip_checker(sell_order_history, buy_order_history, recents_length, cur
 #### $\text{Fee}=120*(0.01*100)$
 #### $\text{Fee}=120\text{ SeaShells}$
 
-#### The goal of this manual trading challenge is to perform the correct trades (buys and sells) with the optimal percentages for these products, and secure as much profit from these trades as we can. The products we will be trading are provided as follows. It is worth noting that it seems that the [Goldberg news source](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/round_5/goldberg_news_source.png) has a news section for each of the products to be traded.
+#### The goal of this manual trading challenge is to perform the correct trades (buys and sells) with the optimal percentages for these products, and secure as much profit from these trades as we can. The products we will be trading are provided as follows. It is worth noting that it seems that the Goldberg news source has a news section for each of the products to be traded.
 1. Haystacks
 2. Ranch sauce
 3. Cacti Needle
@@ -753,7 +753,17 @@ def small_dip_checker(sell_order_history, buy_order_history, recents_length, cur
 8. Moonshine
 9. Striped Shirts
 
-#### Info on what we did
+#### We began this manual trading challenge by noting our reactions on how the events in the Goldberg news source will affect the listed products. We concluded that a train derailment will negatively affect Cacti Needle, discovered issues will significantly hurt Quantum Coffee, an acquisition could mean that we should buy Ranch sauce, increased costs might negatively affect Solar panels, it is unclear how a trip to space and scientific opinions will affect Moonshine, it is unlikely that rumors will affect Haystacks, there might be reason to buy Red Flags, changes in Striped Shirts will depend on the popularity and reputation of the Dalton Brothers, and growing popularity could indicate a need to buy VR Monocle unless the growth is too unsustainable. We then refined our trades with [round_5_manual_trading.py](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/round_5/round_5_manual_trading.py), which was heavily inspired by [Round5.ipynb](https://github.com/gabsens/IMC-Prosperity-2-Manual/blob/master/Round5.ipynb) in gabsens's IMC-Prosperity-2-Manual GitHub repository. In this file, we ended up using the optimal sentiments and sentiment multipliers from a similar manual trading challenge in last year's IMC Prosperity 2 competition, as we noticed that many of last year's products had similar associated stories as our products this year. From this assumption, our code yielded the following:
+
+![round_5_manual_code_output](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_5_manual_code_output.jpg)
+
+#### These are the results of our Round 5 manual trading challenge:
+
+![round_5_manual_results_1](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_5_manual_results_1.gif)
+![round_5_manual_results_2](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_5_manual_results_2.jpg)
+
+#### ^^ Overall, it seems that we performed well on some products (e.g., Cacti Needle, Red Flags, Quantum Coffee) and had room to improve on other products (e.g, Haystacks, Ranch sauce, Solar panels). 
+
 </details>
 
 ---
