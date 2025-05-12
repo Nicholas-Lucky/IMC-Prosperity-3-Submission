@@ -794,9 +794,9 @@ def small_dip_checker(sell_order_history, buy_order_history, recents_length, cur
     <tr align="center">
         <td>Round 4</td>
         <td>3537</td>
-        <td>Didn't Record</td>
-        <td>Didn't Record</td>
-        <td>Didn't Record</td>
+        <td>213</td>
+        <td>2900*</td>
+        <td>956*</td>
     </tr>
     <tr align="center">
         <td>Round 5</td>
@@ -806,3 +806,5 @@ def small_dip_checker(sell_order_history, buy_order_history, recents_length, cur
         <td>369</td>
     </tr>
 </table>
+
+#### * This ranking was not recorded by us, and is hence estimated
