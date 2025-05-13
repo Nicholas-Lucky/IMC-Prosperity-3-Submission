@@ -762,7 +762,11 @@ def small_dip_checker(sell_order_history, buy_order_history, recents_length, cur
 ![round_5_manual_results_1](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_5_manual_results_1.gif)
 ![round_5_manual_results_2](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_5_manual_results_2.jpg)
 
-#### ^^ Overall, it seems that we performed well on some products (e.g., Cacti Needle, Red Flags, Quantum Coffee) and had room to improve on other products (e.g, Haystacks, Ranch sauce, Solar panels). 
+#### ^^ Overall, it seems that we performed well on some products (e.g., Cacti Needle, Red Flags, Quantum Coffee) and had room to improve on other products (e.g, Haystacks, Ranch sauce, Solar panels). This is supported by the optimal trades for the challenge provided by K_Tesla in the IMC Prosperity Discord server. It is worth noting that a positive percentage indicates that a buy is suggested, while a negative percentage indicates that a sell is suggested.
+
+![round_5_manual_results_3](https://github.com/Nicholas-Lucky/IMC-Prosperity-3-Submission/blob/main/readme_embeds/round_5_manual_results_3.png)
+
+#### ^^ Comparing our profits to the optimal profits, it is clear that we have room for improvement.
 
 </details>
 
