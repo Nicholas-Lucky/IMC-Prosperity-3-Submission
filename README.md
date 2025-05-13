@@ -809,8 +809,8 @@ def small_dip_checker(sell_order_history, buy_order_history, recents_length, cur
         <td>Round 4</td>
         <td>3537</td>
         <td>213</td>
-        <td>2900*</td>
-        <td>956*</td>
+        <td> 2900*</td>
+        <td> 956*</td>
     </tr>
     <tr align="center">
         <td>Round 5</td>
